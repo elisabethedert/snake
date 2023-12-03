@@ -3,7 +3,7 @@ import kaboom from "kaboom";
 const WIDTH = 850;
 const HEIGHT = 600;
 const FIELD = 25;
-const BRICK_HEIGHT = 50;
+const BRICK_HEIGHT = 2*FIELD;
 var speed = 80;
 
 // initialize context
@@ -15,47 +15,50 @@ setBackground([0, 120, 0]);
 
 //Game Sceme
 scene("game", () => {
-  // bricks
-  // bottom
-  add([
-    rect(WIDTH, BRICK_HEIGHT),
-    pos(0, HEIGHT),
-    anchor("botleft"),
-    area(),
-    body({ isStatic: true }),
-    color(156, 72, 44),
-    "brick-b",
-  ]);
 
-  // top
-  add([
-    rect(WIDTH, BRICK_HEIGHT),
-    pos(0, 0),
-    area(),
-    body({ isStatic: true }),
-    color(156, 72, 44),
-    "brick-t",
-  ]);
-
-  // left
-  add([
-    rect(BRICK_HEIGHT, WIDTH),
-    pos(0, 0),
-    area(),
-    body({ isStatic: true }),
-    color(156, 72, 44),
-    "brick-l",
-  ]);
-
-  // right
-  add([
-    rect(BRICK_HEIGHT, WIDTH),
-    pos(WIDTH - BRICK_HEIGHT, 0),
-    area(),
-    body({ isStatic: true }),
-    color(156, 72, 44),
-    "brick-r",
-  ]);
+  //add tilemap 30x 20 Fields inside of Bricks
+  addLevel(
+    [
+      "==================================",
+      "==================================",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==                              ==",
+      "==================================",
+      "==================================",
+    ],
+    {
+      // define the size of tile block
+      tileWidth: FIELD,
+      tileHeight: FIELD,
+      // define what each symbol means, by a function returning a component list (what will be passed to add())
+      tiles: {
+        "=": () => [
+          rect(FIELD, FIELD),
+          color(156, 72, 44),
+          area(),
+          "brick",
+        ]
+      },
+    }
+  );
 
   // keep track of score
   let score = 0;
@@ -128,9 +131,6 @@ scene("game", () => {
       // move(LEFT, speed),
       "fruit",
     ]);
-
-    // wait a random amount of time to spawn next tree
-    // wait(rand(0.5, 1.5), spawnTree);
   }
 
   showFruit();
@@ -170,13 +170,7 @@ scene("game", () => {
     go("lose", score);
     // burp(); //sound
   });
-  player.onCollide("brick-r", () => {
-    go("lose", score);
-  });
-  player.onCollide("brick-t", () => {
-    go("lose", score);
-  });
-  player.onCollide("brick-b", () => {
+  player.onCollide("brick", () => {
     go("lose", score);
   });
   player.onCollide("mole", () => {
