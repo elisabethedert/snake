@@ -6,6 +6,11 @@ const FIELD = 25;
 const BRICK_HEIGHT = 2*FIELD;
 var speed = 80;
 
+var food = null;
+var mole = null;
+var bush = null;
+
+
 // initialize context
 kaboom({ width: WIDTH, height: HEIGHT });
 
@@ -114,7 +119,6 @@ scene("game", () => {
   });
 
   // add fruits to game
-  let food = null;
   function showFruit() {
     // var foodPosition = rand(vec2(BRICK_HEIGHT, WIDTH - BRICK_HEIGHT - FIELD), vec2(BRICK_HEIGHT + FIELD, HEIGHT - BRICK_HEIGHT));
     var foodPosition = rand(vec2(2, 3), vec2(31, 22))
@@ -137,7 +141,6 @@ scene("game", () => {
   showFruit();
 
   // add obstacles
-  var mole = null;
   function showMole() {
     var molePosition = rand(vec2(2, 3), vec2(31, 22));
     molePosition.x = Math.floor(molePosition.x)
@@ -156,7 +159,6 @@ scene("game", () => {
     ]);
   }
 
-  var bush = null;
   function showBush() {
     var bushPosition = rand(vec2(2, 3), vec2(31, 22));
     bushPosition.x = Math.floor(bushPosition.x)
@@ -175,12 +177,11 @@ scene("game", () => {
     ]);
   }
 
+  // ToDo: food should not hat the same position as a obstacle!
+  // ToDo: add new food after adding a new obstacle
+  // ToDo: improve the three show-functions to reduce duplicate code
+
   // lose if player collides with any game obj except for fruits
-  player.onCollide("brick-l", () => {
-    // go to "lose" scene and pass the score
-    go("lose", score);
-    //sound
-  });
   player.onCollide("brick", () => {
     go("lose", score);
   });
@@ -200,10 +201,10 @@ scene("game", () => {
   });
 
   function addCollisionObjectandSpeed() {
-    if (score === 3 || score === 4 || score === 6) {
+    if (score%4 === 0 && !(score%36 === 0)) {
       speed = speed + 30;
       showMole();
-    } else if (score === 4 || score === 6 || score === 10) {
+    } else if (score%9 === 0) {
       speed = speed + 40;
       showBush();
     }
