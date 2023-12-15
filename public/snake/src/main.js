@@ -69,12 +69,10 @@ scene("game", () => {
 
   // add player object to screen
   var player = add([
-    // list of components
-    sprite("snake"),
-    // rect(FIELD, FIELD),
+    rect(FIELD, FIELD),
     pos(WIDTH - 400, HEIGHT / 2 - 25),
     area(),
-    // color(255, 20, 20),
+    color(255, 20, 20),
     // move(RIGHT, speed),
     "snake",
   ]);
@@ -116,48 +114,61 @@ scene("game", () => {
   });
 
   // add fruits to game
+  let food = null;
   function showFruit() {
-    add([
+    // var foodPosition = rand(vec2(BRICK_HEIGHT, WIDTH - BRICK_HEIGHT - FIELD), vec2(BRICK_HEIGHT + FIELD, HEIGHT - BRICK_HEIGHT));
+    var foodPosition = rand(vec2(2, 3), vec2(31, 22))
+    foodPosition.x = Math.floor(foodPosition.x)
+    foodPosition.y = Math.floor(foodPosition.y)
+    foodPosition = foodPosition.scale(FIELD);
+    if(food) {
+      destroy(food)
+    }
+    food = add([
       rect(FIELD, FIELD),
       area(),
-      // outline(4),
-      pos(
-        rand(BRICK_HEIGHT, WIDTH - BRICK_HEIGHT - FIELD),
-        rand(BRICK_HEIGHT + FIELD, HEIGHT - BRICK_HEIGHT)
-      ),
-
+      pos(foodPosition),
       anchor("botleft"),
       color(255, 180, 255),
-      // move(LEFT, speed),
       "fruit",
     ]);
   }
-
+  
   showFruit();
 
   // add obstacles
+  var mole = null;
   function showMole() {
-    add([
+    var molePosition = rand(vec2(2, 3), vec2(31, 22));
+    molePosition.x = Math.floor(molePosition.x)
+    molePosition.y = Math.floor(molePosition.y)
+    molePosition = molePosition.scale(FIELD);
+    if(mole) {
+      destroy(mole)
+    }
+    mole = add([
       rect(FIELD, FIELD),
       area(),
-      pos(
-        rand(BRICK_HEIGHT, WIDTH - BRICK_HEIGHT - FIELD),
-        rand(BRICK_HEIGHT + FIELD, HEIGHT - BRICK_HEIGHT)
-      ),
+      pos(molePosition),
       anchor("botleft"),
       color(87, 50, 3),
       "mole",
     ]);
   }
 
+  var bush = null;
   function showBush() {
-    add([
+    var bushPosition = rand(vec2(2, 3), vec2(31, 22));
+    bushPosition.x = Math.floor(bushPosition.x)
+    bushPosition.y = Math.floor(bushPosition.y)
+    bushPosition = bushPosition.scale(FIELD);
+    if(bush) {
+      destroy(bush)
+    }
+    bush = add([
       rect(rand(FIELD, 3 * FIELD), rand(FIELD, 3 * FIELD)),
       area(),
-      pos(
-        rand(BRICK_HEIGHT, WIDTH - BRICK_HEIGHT - FIELD),
-        rand(BRICK_HEIGHT + FIELD, HEIGHT - BRICK_HEIGHT)
-      ),
+      pos(bushPosition),
       anchor("botleft"),
       color(39, 125, 60),
       "bush",
@@ -168,7 +179,7 @@ scene("game", () => {
   player.onCollide("brick-l", () => {
     // go to "lose" scene and pass the score
     go("lose", score);
-    // burp(); //sound
+    //sound
   });
   player.onCollide("brick", () => {
     go("lose", score);
@@ -202,7 +213,8 @@ scene("game", () => {
 // EndScene with Highscore
 scene("lose", (score) => {
   add([
-    sprite("snake"),
+    rect(FIELD, FIELD),
+    color(255, 20, 20),
     pos(WIDTH / 2, HEIGHT / 2 - 80),
     scale(2),
     anchor("center"),
