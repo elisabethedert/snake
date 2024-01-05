@@ -14,7 +14,6 @@ var scoreLabel = null;
 kaboom({ width: WIDTH, height: HEIGHT });
 
 // load assets
-loadSprite("snake", "sprites/bean.png");
 loadSprite("bg", "sprites/bg.png");
 
 //Game Sceme
@@ -219,6 +218,51 @@ scene("game", () => {
       },
     },
   });
+  loadSpriteAtlas("sprites/orange.png", {
+    "orange": {
+      x: 0,
+      y: 0,
+      width: 294,
+      height: 49,
+      sliceX: 6,
+      anims: {
+        "orangeAnim": { from: 0, to: 5, speed: 15 },
+      },
+    },
+  });
+  loadSpriteAtlas("sprites/pineapple.png", {
+    "pineapple": {
+      x: 0,
+      y: 0,
+      width: 294,
+      height: 49,
+      sliceX: 6,
+      anims: {
+        "pineappleAnim": { from: 0, to: 5, speed: 15 },
+      },
+    },
+  });
+  loadSpriteAtlas("sprites/superfruits.png", {
+    "superfruits": {
+      x: 0,
+      y: 0,
+      width: 294,
+      height: 49,
+      sliceX: 6,
+      anims: {
+        "superfruitsAnim": { from: 0, to: 5, speed: 15 },
+      },
+    },
+  });
+
+  let fruitArr = ["strawberry", "apple", "pineapple", "orange", "superfruits"] 
+  let spriteFruit = ""
+
+
+  function randomFruit(fruitList) {
+    console.log("spritefruit " + spriteFruit);
+    return fruitList[Math.floor((Math.random() * fruitList.length))];
+  }
 
   let fruitPositionAllX = null;
   let fruitPositionAllY = null;
@@ -231,20 +275,34 @@ scene("game", () => {
     if (fruit) {
       destroy(fruit);
     }
+
+    let sprites = randomFruit(fruitArr)
+
     fruit = add([
       pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
-      sprite("apple"),
-      // rect(FIELD - 0.2, FIELD - 0.2),
+      sprite(sprites),
       area(),
       "fruit",
     ]);
-    fruit.play("appleAnim")
+
+    if (sprites == "apple") {
+      fruit.play("appleAnim")
+    } else if (sprites == "strawberry") {
+      fruit.play("strawberryAnim")
+    } else if (sprites == "orange") {
+      fruit.play("orangeAnim")
+    } else if (sprites == "pineapple") {
+      fruit.play("pineappleAnim")
+    } else if (sprites == "superfruits") {
+      fruit.play("superfruitsAnim")
+    }
     console.log(fruit.pos.x);
+
     // avoid that obstacles and food can have the same positions
     fruitPositionAllX = fruit.pos.x;
     fruitPositionAllY = fruit.pos.y;
   }
-
+  
   showFruit();
 
   loadSpriteAtlas("sprites/obstacles.png", {
