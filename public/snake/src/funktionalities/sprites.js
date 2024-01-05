@@ -18,28 +18,24 @@ export default class Sprites {
 
   loadSprite(name) {
     if(this.fruitArr.includes(name)) {
-      k.loadSpriteAtlas("sprites/" + name + ".png", {
-        fruitName: {
-          x: 0,
-          y: 0,
-          width: 294,
-          height: 49,
-          sliceX: 6,
-          anims: {
-            anim: { from: 0, to: 5, speed: 15 },
-          },
+      k.loadSprite("fruitSprite", "sprites/" + name + ".png", {
+      sliceX: 6,
+      sliceY: 1,
+      anims: {
+        anim: {
+          from: 0,
+          to: 5,
         },
-      });
+      },
+    });
     } else {
-      k.loadSpriteAtlas("sprites/" + name + ".png", {
-        obstacleName: {
-          x: 0,
-          y: 0,
-          width: 294,
-          height: 49,
-          sliceX: 6,
-          anims: {
-            anim: { from: 0, to: 5, speed: 15 },
+      k.loadSprite("oSprite", "sprites/" + name + ".png", {
+        sliceX: 6,
+        sliceY: 1,
+        anims: {
+          anim: {
+            from: 0,
+            to: 5,
           },
         },
       });
@@ -67,7 +63,7 @@ export default class Sprites {
 
     this.fruit = add([
       k.pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
-      k.sprite("fruitName"),
+      k.sprite("fruitSprite"),
       k.area(),
       "fruit",
     ]);
@@ -86,7 +82,7 @@ export default class Sprites {
     obstaclePosition.y = Math.floor(obstaclePosition.y);
     obstaclePosition = obstaclePosition.scale(this.fieldSize);
 
-    let obst = this.obstacle;
+    let obstacle = this.obstacle;
 
     if (this.obstacle) {
       k.destroy(this.obstacle);
@@ -99,13 +95,13 @@ export default class Sprites {
       this.fruitPositionAllY != obstaclePosition.y
     ) {
       k.wait(1, function () {
-        obst = add([
+        obstacle = add([
           k.pos(obstaclePosition.x + 0.1, obstaclePosition.y + 0.1),
-          k.sprite("obstacleName"),
+          k.sprite("oSprite"),
           k.area(),
           "obstacle",
         ]);
-        obst.play("anim");
+        obstacle.play("anim");
       });
     }
   }

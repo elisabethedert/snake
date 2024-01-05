@@ -1,10 +1,10 @@
 import k from "./kaboom"
-import Game from "./scenes/game"
+import Start from "./scenes/start"
 
-k.scene("Game", Game)
+k.scene("Start", Start)
 
 k.scene("Main", () => {
-  k.go("Game")
+  k.go("Start")
 });
 
 k.go("Main");
