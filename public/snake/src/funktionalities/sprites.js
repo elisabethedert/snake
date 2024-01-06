@@ -17,17 +17,17 @@ export default class Sprites {
   }
 
   loadSprite(name) {
-    if(this.fruitArr.includes(name)) {
+    if (this.fruitArr.includes(name)) {
       k.loadSprite("fruitSprite", "sprites/" + name + ".png", {
-      sliceX: 6,
-      sliceY: 1,
-      anims: {
-        anim: {
-          from: 0,
-          to: 5,
+        sliceX: 6,
+        sliceY: 1,
+        anims: {
+          anim: {
+            from: 0,
+            to: 5,
+          },
         },
-      },
-    });
+      });
     } else {
       k.loadSprite("oSprite", "sprites/" + name + ".png", {
         sliceX: 6,
@@ -59,14 +59,27 @@ export default class Sprites {
     }
 
     let randFruit = this.randomFruit(this.fruitArr);
-    this.loadSprite(randFruit);
+    if (randFruit == "superfruits") {
+      this.loadSprite(randFruit);
+      console.log("hier steht superfruit:" + randFruit);
 
-    this.fruit = add([
-      k.pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
-      k.sprite("fruitSprite"),
-      k.area(),
-      "fruit",
-    ]);
+      this.fruit = add([
+        k.pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
+        k.sprite("fruitSprite"),
+        k.area(),
+        "superfruit",
+      ]);
+    } else {
+      this.loadSprite(randFruit);
+      console.log("normale Frucht:" + randFruit);
+
+      this.fruit = add([
+        k.pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
+        k.sprite("fruitSprite"),
+        k.area(),
+        "fruit",
+      ]);
+    }
 
     this.fruit.play("anim");
 
