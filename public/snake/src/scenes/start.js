@@ -20,4 +20,18 @@ export default function Start() {
 
   // go to game with space is pressed
   k.onKeyPress("space", () => k.go("Game"));
+
+  // buttons to start game and show control keys
+  // TODO:
+  let addbutton;
+  addbutton = add([
+    k.rect(40, 40),
+    k.color(234, 23, 4),
+    k.pos(WIDTH / 2, HEIGHT / 2 - 178),
+    k.anchor("center"),
+    k.area(),
+    "button"
+  ]);
+  onClick("button", () => go("Game"))
+
 }
