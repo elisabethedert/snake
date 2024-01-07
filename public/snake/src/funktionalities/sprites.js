@@ -104,8 +104,8 @@ export default class Sprites {
     this.loadSprite(obstacleSprite);
 
     if (
-      this.fruitPositionAllX != obstaclePosition.x &&
-      this.fruitPositionAllY != obstaclePosition.y
+      this.fruitPositionAllX !== obstaclePosition.x + 0.1 &&
+      this.fruitPositionAllY !== obstaclePosition.y + 0.1
     ) {
       k.wait(1, function () {
         obstacle = add([
@@ -116,6 +116,8 @@ export default class Sprites {
         ]);
         obstacle.play("anim");
       });
+    } else {
+      this.showObstacles(obstacleSprite);
     }
   }
 }
