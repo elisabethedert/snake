@@ -1,5 +1,5 @@
 import k from "../kaboom";
-import Field from "../funktionalities/field";
+import Layout from "../funktionalities/layout";
 import Snake from "../funktionalities/snake";
 import Sprites from "../funktionalities/sprites";
 import Collision from "../funktionalities/collision";
@@ -10,12 +10,12 @@ export default function Game() {
 
   let speed = 0.4;
 
-  let field = new Field(FIELDSIZE);
+  let layout = new Layout();
   let snake = new Snake(FIELDSIZE);
   let sprites = new Sprites(FIELDSIZE);
   let collision = new Collision(FIELDSIZE, "snake", sprites, speed);
 
-  field.buildPlayground();
+  layout.buildPlayground(Config.fieldsize);
 
   // --- Snake Tutorial by Ritza ---
   const directions = {

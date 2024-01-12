@@ -55,4 +55,43 @@ export default class Layout {
       k.anchor("center"),
     ]);
   }
+
+  buildPlayground(fieldSize) {
+    k.loadSprite("bg", "sprites/bg.png");
+  
+    k.add([sprite("bg")]);
+    //add tilemap 30x 20 Fields inside of Bricks
+    k.addLevel(
+      [
+        "=================",
+        "=               =",
+        "=               =",
+        "=               =",
+        "=               =",
+        "=               =",
+        "=               =",
+        "=               =",
+        "=               =",
+        "=               =",
+        "=               =",
+        "=================",
+      ],
+      {
+        // define the size of tile block
+        tileWidth: fieldSize,
+        tileHeight: fieldSize,
+        // define what each symbol means, by a function returning a component list (what will be passed to add())
+        tiles: {
+          "=": () => [
+            k.rect(fieldSize - 2, fieldSize - 2),
+            k.pos(1, 1),
+            k.color(156, 72, 44),
+            k.opacity(0),
+            k.area(),
+            "brick",
+          ],
+        },
+      }
+    );
+}
 }
