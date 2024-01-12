@@ -1,8 +1,10 @@
 import k from "../kaboom";
+import Config from "../config/config.json";
 
 export default class Sprites {
   constructor(fieldSize) {
     this.fieldSize = fieldSize;
+    this.width = Config.width
     this.fruitArr = [
       "strawberry",
       "apple",

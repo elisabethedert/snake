@@ -3,9 +3,10 @@ import Field from "../funktionalities/field";
 import Snake from "../funktionalities/snake";
 import Sprites from "../funktionalities/sprites";
 import Collision from "../funktionalities/collision";
+import Config from "../config/config.json";
 
 export default function Game() {
-  const FIELDSIZE = 50;
+  const FIELDSIZE = Config.fieldsize;
 
   let speed = 0.4;
 
