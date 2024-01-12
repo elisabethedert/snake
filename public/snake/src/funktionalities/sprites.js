@@ -16,6 +16,27 @@ export default class Sprites {
     this.obstacle = null;
   }
 
+  loadSpriteSnakeHead(){
+    k.loadSprite("snakeTung", "sprites/snakeTung.png", {
+      sliceX: 14,
+      sliceY: 1,
+      anims: {
+        tung: {
+          from: 0,
+          to: 13,
+        },
+      },
+    });
+    
+    k.add([
+      k.sprite("snakeTung", { anim: "tung" }),
+      k.scale(1.75),
+      k.pos(this.width / 2, 120),
+      rotate(90),
+      k.anchor("center"),
+    ]);
+  }
+
   loadSprite(name) {
     if (this.fruitArr.includes(name)) {
       k.loadSprite("fruitSprite", "sprites/" + name + ".png", {

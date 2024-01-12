@@ -4,7 +4,7 @@ import Start from "./scenes/start"
 k.scene("Start", Start)
 
 k.scene("Main", () => {
-  k.go("Start")
+  k.go("Start", null)
 });
 
 k.go("Main");

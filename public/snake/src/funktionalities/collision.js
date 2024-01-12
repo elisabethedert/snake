@@ -47,12 +47,12 @@ export default class Collsion {
 
     k.onCollide("snake", "brick", (s, b) => {
       console.log("Collision Brick " + this.isSupersnake);
-      k.go("Lose", this.score);
+      k.go("Start", this.score);
     });
 
     k.onCollide("snake", "obstacle", (s, m) => {
       if (this.isSupersnake == false) {
-        k.go("Lose", this.score);
+        k.go("Start", this.score);
       }
     });
   }

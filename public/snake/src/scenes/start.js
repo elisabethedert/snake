@@ -1,37 +1,26 @@
 import k from "../kaboom";
 import Game from "./game";
+import Sprites from "../funktionalities/sprites";
+import Layout from "../funktionalities/layout";
+import Config from "../config/config.json";
+
 
 k.scene("Game", Game);
 
-export default function Start() {
-  const WIDTH = 850;
-  const HEIGHT = 600;
+export default function Start(score) {
 
-  k.loadSprite("bg", "sprites/bg.png");
+  let layout = new Layout();
+  let sprites = new Sprites(Config.fieldsize);
+  
+  layout.addBackground();
+  sprites.loadSpriteSnakeHead();
+  
+  if(score == null) {
+    layout.addButton(220, 70, "Spielen", 245, 420, () => k.go("Game"));
+    layout.addButton(220, 70, "Steuerung", 605, 420, () => k.go("Game"));
+  } else {
+    layout.addText(score, Config.width, Config.height);
+    layout.addButton(220, 70, "Nochmal?", 245, 420, () => k.go("Game"));
+    layout.addButton(220, 70, "Steuerung", 605, 420, () => k.go("Game"));
 
-  k.add([sprite("bg")]);
-
-  k.add([
-    k.text("Play? Press Space-Key"),
-    k.pos(WIDTH / 2, HEIGHT / 2 + 140),
-    k.scale(0.75),
-    k.anchor("center"),
-  ]);
-
-  // go to game with space is pressed
-  k.onKeyPress("space", () => k.go("Game"));
-
-  // buttons to start game and show control keys
-  // TODO:
-  let addbutton;
-  addbutton = add([
-    k.rect(40, 40),
-    k.color(234, 23, 4),
-    k.pos(WIDTH / 2, HEIGHT / 2 - 178),
-    k.anchor("center"),
-    k.area(),
-    "button"
-  ]);
-  onClick("button", () => go("Game"))
-
-}
+  }}
