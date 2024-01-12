@@ -3,11 +3,6 @@ import k from "../kaboom";
 export default class Layout {
   constructor() {}
 
-  addBackground() {
-    k.loadSprite("bg", "sprites/bg.png");
-    k.add([k.sprite("bg")]);
-  }
-
   addButton(rectX, rectY, txt, posX, posY, scene) {
     let text = add([
       k.rect(rectX, rectY),
@@ -51,15 +46,20 @@ export default class Layout {
       ),
       k.pos(width / 2, height / 2),
       k.color(249, 121, 25),
-      k.scale(1.5),
+      k.scale(1.3),
       k.anchor("center"),
     ]);
   }
 
+  addImage(image){
+    k.loadSprite(image, "sprites/"+image+".png");
+    k.add([sprite(image),      
+    ]);
+  }
+
   buildPlayground(fieldSize) {
-    k.loadSprite("bg", "sprites/bg.png");
-  
-    k.add([sprite("bg")]);
+    this.addImage("bg")
+
     //add tilemap 30x 20 Fields inside of Bricks
     k.addLevel(
       [
