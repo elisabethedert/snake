@@ -3,21 +3,20 @@ import Layout from "../funktionalities/layout";
 import Snake from "../funktionalities/snake";
 import Sprites from "../funktionalities/sprites";
 import Collision from "../funktionalities/collision";
-import Config from "../config/config.json";
 
 export default function Game() {
 
   let layout = new Layout();
   let snake = new Snake();
   let sprites = new Sprites();
-  let collision = new Collision("snake", sprites);
+  let collision = new Collision();
 
-  layout.buildPlayground(Config.fieldsize);
+  layout.buildPlayground();
   
   sprites.showFruit();
 
   collision.showScoreLabel();
-  collision.collide(snake);
+  collision.collide(snake, sprites);
 
   snake.snakeSprite();
   snake.respawn_snake();

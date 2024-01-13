@@ -1,4 +1,5 @@
 import k from "../kaboom";
+import Config from "../config/config.json";
 
 export default class Layout {
   constructor() {}
@@ -57,7 +58,7 @@ export default class Layout {
     ]);
   }
 
-  buildPlayground(fieldsize) {
+  buildPlayground() {
     this.addImage("bg")
 
     //add tilemap 30x 20 Fields inside of Bricks
@@ -78,12 +79,12 @@ export default class Layout {
       ],
       {
         // define the size of tile block
-        tileWidth: fieldsize,
-        tileHeight: fieldsize,
+        tileWidth: Config.fieldsize,
+        tileHeight: Config.fieldsize,
         // define what each symbol means, by a function returning a component list (what will be passed to add())
         tiles: {
           "=": () => [
-            k.rect(fieldsize - 2, fieldsize - 2),
+            k.rect(Config.fieldsize - 2, Config.fieldsize - 2),
             k.pos(1, 1),
             k.color(156, 72, 44),
             k.opacity(0),

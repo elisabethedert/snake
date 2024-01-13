@@ -11,6 +11,7 @@ export default class Snake {
     this.snake_length = 3;
     this.snakeBody = [];
     this.isSupersnake = false;
+    this.spriteName = "snake"
 
     this.speed = Config.speed;
   }
@@ -43,7 +44,7 @@ export default class Snake {
   }
 
   respawn_snake() {
-    k.destroyAll("snake");
+    k.destroyAll(this.spriteName);
 
     this.snakeBody = [];
     this.snake_length = 3;
@@ -55,7 +56,7 @@ export default class Snake {
         k.pos(2 * this.fieldsize, this.fieldsize * i),
         k.color(0, 220, 255),
         k.area(),
-        "snake",
+        this.spriteName,
       ]);
       this.snakeBody.push(segment);
     }
@@ -133,7 +134,7 @@ export default class Snake {
           k.pos(snake_head.pos.x + move_x, snake_head.pos.y + move_y),
           k.color(0, 0, 255),
           k.area(),
-          "snake",
+          this.spriteName,
         ])
       );
 

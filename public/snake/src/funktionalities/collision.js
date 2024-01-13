@@ -4,10 +4,8 @@ import Sprites from "./sprites";
 import Config from "../config/config.json";
 
 export default class Collsion {
-  constructor(snake, sprites) {
+  constructor() {
     this.fieldsize = Config.fieldsize;
-    this.snake = snake;
-    this.sprites = sprites;
     this.scoreLabel = null;
     this.score = 0;
   }
@@ -23,10 +21,10 @@ export default class Collsion {
     ]);
   }
 
-  collide(snakeObject) {
-    k.onCollide(this.snake, "superfruit", (s, f) => {
-      snakeObject.isSupersnake = true;
-      this.sprites.showFruit();
+  collide(snake, sprites) {
+    k.onCollide(snake.spriteName, "superfruit", (s, f) => {
+      snake.isSupersnake = true;
+      sprites.showFruit();
       this.showScoreLabel();
       // setTimeout(function () {
       //   this.isSupersnake = false;
@@ -35,33 +33,33 @@ export default class Collsion {
       // }, 3000);
     });
 
-    k.onCollide(this.snake, "fruit", (s, sf) => {
-      snakeObject.isSupersnake = false;
+    k.onCollide(snake.spriteName, "fruit", (s, sf) => {
+      snake.isSupersnake = false;
       this.score++;
-      this.addCollisionObjectandSpeed(snakeObject);
-      snakeObject.snake_length++;
-      this.sprites.showFruit();
+      this.addCollisionObjectandSpeed(snake, sprites);
+      snake.snake_length++;
+      sprites.showFruit();
       this.showScoreLabel();
     });
 
-    k.onCollide(this.snake, "brick", (s, b) => {
+    k.onCollide(snake.spriteName, "brick", (s, b) => {
       k.go("Start", this.score);
     });
 
-    k.onCollide(this.snake, "obstacle", (s, m) => {
-      if (snakeObject.isSupersnake == false) {
+    k.onCollide(snake.spriteName, "obstacle", (s, m) => {
+      if (snake.isSupersnake == false) {
         k.go("Start", this.score);
       }
     });
   }
 
-  addCollisionObjectandSpeed(snakeObject) {
+  addCollisionObjectandSpeed(snake, sprites) {
     if (this.score % 4 === 0 && !(this.score % 36 === 0)) {
-      snakeObject.addSpeed(0.05);
-      this.sprites.showObstacles("mole");
+      snake.addSpeed(0.05);
+      sprites.showObstacles("mole");
     } else if (this.score % 9 === 0) {
-      snakeObject.addSpeed(0.1);
-      this.sprites.showObstacles("bush");
+      snake.addSpeed(0.1);
+      sprites.showObstacles("bush");
     }
   }
 }
