@@ -9,7 +9,6 @@ export default class Collsion {
     this.sprites = sprites;
     this.scoreLabel = null;
     this.score = 0;
-    this.isSupersnake = false;
   }
 
   showScoreLabel() {
@@ -25,8 +24,7 @@ export default class Collsion {
 
   collide(snakeObject) {
     k.onCollide(this.snake, "superfruit", (s, f) => {
-      // TODO: isSupersnake in Snake verschieben nicht in Collision lassen, Attribut von Snake Objekt
-      this.isSupersnake = true;
+      snakeObject.isSupersnake = true;
       this.sprites.showFruit();
       this.showScoreLabel();
       // setTimeout(function () {
@@ -37,21 +35,20 @@ export default class Collsion {
     });
 
     k.onCollide(this.snake, "fruit", (s, sf) => {
-      this.isSupersnake = false;
+      snakeObject.isSupersnake = false;
       this.score++;
       this.addCollisionObjectandSpeed(snakeObject);
-      snakeObject.addLength();
+      snakeObject.snake_length++;
       this.sprites.showFruit();
       this.showScoreLabel();
     });
 
     k.onCollide(this.snake, "brick", (s, b) => {
-      console.log("Collision Brick " + this.isSupersnake);
       k.go("Start", this.score);
     });
 
     k.onCollide(this.snake, "obstacle", (s, m) => {
-      if (this.isSupersnake == false) {
+      if (snakeObject.isSupersnake == false) {
         k.go("Start", this.score);
       }
     });
@@ -63,7 +60,6 @@ export default class Collsion {
       this.sprites.showObstacles("mole");
     } else if (this.score % 9 === 0) {
       snakeObject.addSpeed(0.1);
-      console.log(speed);
       this.sprites.showObstacles("bush");
     }
   }

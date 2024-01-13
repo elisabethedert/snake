@@ -10,12 +10,9 @@ export default class Snake {
     this.run_action = false;
     this.snake_length = 3;
     this.snakeBody = [];
+    this.isSupersnake = false;
 
     this.speed = speed;
-  }
-
-  addLength() {
-    this.snake_length++;
   }
 
   addSpeed(faster) {
