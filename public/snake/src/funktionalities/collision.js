@@ -1,10 +1,11 @@
 import k from "../kaboom";
 
 import Sprites from "./sprites";
+import Config from "../config/config.json";
 
 export default class Collsion {
-  constructor(fieldSize, snake, sprites) {
-    this.fieldSize = fieldSize;
+  constructor(snake, sprites) {
+    this.fieldsize = Config.fieldsize;
     this.snake = snake;
     this.sprites = sprites;
     this.scoreLabel = null;
@@ -17,7 +18,7 @@ export default class Collsion {
     }
     this.scoreLabel = k.add([
       text(this.score),
-      pos(this.fieldSize / 2, this.fieldSize / 2),
+      pos(this.fieldsize / 2, this.fieldsize / 2),
       "scoreLabel",
     ]);
   }

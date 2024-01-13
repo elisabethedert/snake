@@ -3,8 +3,8 @@ import Config from "../config/config.json";
 
 //Snake Tutorial by Ritza
 export default class Snake {
-  constructor(fieldSize, speed) {
-    this.fieldSize = fieldSize;
+  constructor() {
+    this.fieldsize = Config.fieldsize;
 
     this.current_direction = "right";
     this.run_action = false;
@@ -12,7 +12,7 @@ export default class Snake {
     this.snakeBody = [];
     this.isSupersnake = false;
 
-    this.speed = speed;
+    this.speed = Config.speed;
   }
 
   addSpeed(faster) {
@@ -50,9 +50,9 @@ export default class Snake {
 
     for (let i = 1; i <= this.snake_length; i++) {
       let segment = k.add([
-        k.rect(this.fieldSize, this.fieldSize),
+        k.rect(this.fieldsize, this.fieldsize),
         // sprite("snakeSprite"),
-        k.pos(2 * this.fieldSize, this.fieldSize * i),
+        k.pos(2 * this.fieldsize, this.fieldsize * i),
         k.color(0, 220, 255),
         k.area(),
         "snake",
@@ -107,18 +107,18 @@ export default class Snake {
       switch (this.current_direction) {
         case "down":
           move_x = 0;
-          move_y = this.fieldSize;
+          move_y = this.fieldsize;
           break;
         case "up":
           move_x = 0;
-          move_y = -1 * this.fieldSize;
+          move_y = -1 * this.fieldsize;
           break;
         case "left":
-          move_x = -1 * this.fieldSize;
+          move_x = -1 * this.fieldsize;
           move_y = 0;
           break;
         case "right":
-          move_x = this.fieldSize;
+          move_x = this.fieldsize;
           move_y = 0;
           break;
       }
@@ -129,7 +129,7 @@ export default class Snake {
 
       this.snakeBody.push(
         k.add([
-          k.rect(this.fieldSize, this.fieldSize),
+          k.rect(this.fieldsize, this.fieldsize),
           k.pos(snake_head.pos.x + move_x, snake_head.pos.y + move_y),
           k.color(0, 0, 255),
           k.area(),

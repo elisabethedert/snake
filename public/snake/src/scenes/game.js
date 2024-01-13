@@ -8,9 +8,9 @@ import Config from "../config/config.json";
 export default function Game() {
 
   let layout = new Layout();
-  let snake = new Snake(Config.fieldsize, 0.4);
-  let sprites = new Sprites(Config.fieldsize);
-  let collision = new Collision(Config.fieldsize, "snake", sprites);
+  let snake = new Snake();
+  let sprites = new Sprites();
+  let collision = new Collision("snake", sprites);
 
   layout.buildPlayground(Config.fieldsize);
   

@@ -2,8 +2,8 @@ import k from "../kaboom";
 import Config from "../config/config.json";
 
 export default class Sprites {
-  constructor(fieldSize) {
-    this.fieldSize = fieldSize;
+  constructor() {
+    this.fieldsize = Config.fieldsize;
     this.width = Config.width
     this.fruitArr = [
       "strawberry",
@@ -75,7 +75,7 @@ export default class Sprites {
 
     fruitPosition.x = Math.floor(fruitPosition.x);
     fruitPosition.y = Math.floor(fruitPosition.y);
-    fruitPosition = fruitPosition.scale(this.fieldSize);
+    fruitPosition = fruitPosition.scale(this.fieldsize);
 
     if (this.fruit) {
       destroy(this.fruit);
@@ -116,7 +116,7 @@ export default class Sprites {
 
     obstaclePosition.x = Math.floor(obstaclePosition.x);
     obstaclePosition.y = Math.floor(obstaclePosition.y);
-    obstaclePosition = obstaclePosition.scale(this.fieldSize);
+    obstaclePosition = obstaclePosition.scale(this.fieldsize);
 
     let obstacle = this.obstacle;
 

@@ -1,5 +1,6 @@
 {
     "width": 850,
     "height": 600,
-    "fieldsize": 50
+    "fieldsize": 50,
+    "speed": 0.4
 }

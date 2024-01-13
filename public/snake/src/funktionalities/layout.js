@@ -36,7 +36,7 @@ export default class Layout {
     });
   }
 
-  addText(txt, width, height) {
+  addText(txt, posX, posY) {
     // k.loadFont("lilitaone", "./assets/fonts/LilitaOne-Regular.ttf");
 
     k.add([
@@ -44,7 +44,7 @@ export default class Layout {
         txt
         //  { font: "lilitaone" }
       ),
-      k.pos(width / 2, height / 2),
+      k.pos(posX / 2, posY / 2),
       k.color(249, 121, 25),
       k.scale(1.3),
       k.anchor("center"),
@@ -57,7 +57,7 @@ export default class Layout {
     ]);
   }
 
-  buildPlayground(fieldSize) {
+  buildPlayground(fieldsize) {
     this.addImage("bg")
 
     //add tilemap 30x 20 Fields inside of Bricks
@@ -78,12 +78,12 @@ export default class Layout {
       ],
       {
         // define the size of tile block
-        tileWidth: fieldSize,
-        tileHeight: fieldSize,
+        tileWidth: fieldsize,
+        tileHeight: fieldsize,
         // define what each symbol means, by a function returning a component list (what will be passed to add())
         tiles: {
           "=": () => [
-            k.rect(fieldSize - 2, fieldSize - 2),
+            k.rect(fieldsize - 2, fieldsize - 2),
             k.pos(1, 1),
             k.color(156, 72, 44),
             k.opacity(0),
