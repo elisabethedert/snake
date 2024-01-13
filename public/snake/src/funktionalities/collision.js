@@ -3,11 +3,10 @@ import k from "../kaboom";
 import Sprites from "./sprites";
 
 export default class Collsion {
-  constructor(fieldSize, snake, sprites, speed) {
+  constructor(fieldSize, snake, sprites) {
     this.fieldSize = fieldSize;
     this.snake = snake;
     this.sprites = sprites;
-    this.speed = speed;
     this.scoreLabel = null;
     this.score = 0;
     this.isSupersnake = false;
@@ -24,8 +23,9 @@ export default class Collsion {
     ]);
   }
 
-  collide() {
-    k.onCollide("snake", "superfruit", (s, f) => {
+  collide(snakeObject) {
+    k.onCollide(this.snake, "superfruit", (s, f) => {
+      // TODO: isSupersnake in Snake verschieben nicht in Collision lassen, Attribut von Snake Objekt
       this.isSupersnake = true;
       this.sprites.showFruit();
       this.showScoreLabel();
@@ -36,33 +36,34 @@ export default class Collsion {
       // }, 3000);
     });
 
-    k.onCollide("snake", "fruit", (s, sf) => {
+    k.onCollide(this.snake, "fruit", (s, sf) => {
       this.isSupersnake = false;
       this.score++;
-      this.addCollisionObjectandSpeed();
-      // snake_length++;
+      this.addCollisionObjectandSpeed(snakeObject);
+      snakeObject.addLength();
       this.sprites.showFruit();
       this.showScoreLabel();
     });
 
-    k.onCollide("snake", "brick", (s, b) => {
+    k.onCollide(this.snake, "brick", (s, b) => {
       console.log("Collision Brick " + this.isSupersnake);
       k.go("Start", this.score);
     });
 
-    k.onCollide("snake", "obstacle", (s, m) => {
+    k.onCollide(this.snake, "obstacle", (s, m) => {
       if (this.isSupersnake == false) {
         k.go("Start", this.score);
       }
     });
   }
 
-  addCollisionObjectandSpeed() {
+  addCollisionObjectandSpeed(snakeObject) {
     if (this.score % 4 === 0 && !(this.score % 36 === 0)) {
-      this.speed = this.speed - 0.05;
+      snakeObject.addSpeed(0.05);
       this.sprites.showObstacles("mole");
     } else if (this.score % 9 === 0) {
-      this.speed = this.speed - 0.1;
+      snakeObject.addSpeed(0.1);
+      console.log(speed);
       this.sprites.showObstacles("bush");
     }
   }
