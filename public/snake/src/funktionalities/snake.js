@@ -3,6 +3,8 @@ import Config from "../config/config.json";
 
 //Snake Tutorial by Ritza
 export default class Snake {
+  // snake-functions are inspired by "Copyright (c) 2015 Rembound.com" and "Replid Snake Tutorial by Ritza"
+
   constructor() {
     this.fieldsize = Config.fieldsize;
 
@@ -20,75 +22,60 @@ export default class Snake {
     this.speed = this.speed - faster;
   }
 
-  // snakeSprite() {
-  //   k.loadSprite(this.spriteName, "sprites/snakeSpriteBody.png", {
-  //     sliceX: 7,
-  //     sliceY: 1,
-  //     anims: {
-  //       snakeHeadTopAnim: { from: 0, to: 0 },
-  //       snakeHeadRightAnim: { from: 1, to: 1 },
-  //       snakeHeadBottomAnim: { from: 2, to: 2 },
-  //       snakeHeadLeftAnim: { from: 3, to: 3 },
-  //       snakeTailTopAnim: { from: 4, to: 4 },
-  //       snakeTailRightAnim: { from: 5, to: 5 },
-  //       snakeTailBottomAnim: { from: 6, to: 6 },
-  //       snakeTailLeftAnim: { from: 7, to: 7 },
-  //       snakeBodyVerticalAnim: { from: 8, to: 8 },
-  //       snakeBodyHorizontalAnim: { from: 9, to: 9 },
-  //       snakeCornerRightBotAnim: { from: 10, to: 10 },
-  //       snakeCornerLefttopAnim: { from: 11, to: 11 },
-  //       snakeCornerLeftBotAnim: { from: 12, to: 12 },
-  //       snakeCornerRightTopAnim: { from: 13, to: 13 },
-  //     },
-  //   });
-  // }
-
-  respawn_snake() {
+  snakeSprite() {
     k.loadSprite(this.spriteName, "sprites/snakeSpriteBody.png", {
       sliceX: 14,
       sliceY: 1,
       anims: {
-        snakeHeadTopAnim: { from: 0, to: 0 },
-        snakeHeadRightAnim: { from: 1, to: 1 },
-        snakeHeadBottomAnim: { from: 2, to: 2 },
-        snakeHeadLeftAnim: { from: 3, to: 3 },
-        snakeTailTopAnim: { from: 4, to: 4 },
-        snakeTailRightAnim: { from: 5, to: 5 },
-        snakeTailBottomAnim: { from: 6, to: 6 },
-        snakeTailLeftAnim: { from: 7, to: 7 },
-        snakeBodyVerticalAnim: { from: 8, to: 8 },
-        snakeBodyHorizontalAnim: { from: 9, to: 9 },
-        snakeCornerRightBotAnim: { from: 10, to: 10 },
-        snakeCornerLefttopAnim: { from: 11, to: 11 },
-        snakeCornerLeftBotAnim: { from: 12, to: 12 },
-        snakeCornerRightTopAnim: { from: 13, to: 13 },
+        headGoDown: { from: 0, to: 0 },
+        headGoLeft: { from: 1, to: 1 },
+        headGoTop: { from: 2, to: 2 },
+        headGoRight: { from: 3, to: 3 },
+
+        tailGoDown: { from: 4, to: 4 },
+        tailGoLeft: { from: 5, to: 5 },
+        tailGoTop: { from: 6, to: 6 },
+        tailGoRight: { from: 7, to: 7 },
+
+        bodyGoVertical: { from: 8, to: 8 },
+        bodyGoHorizontal: { from: 9, to: 9 },
+
+        bodyCornerTopRight: { from: 10, to: 10 },
+        bodyCornerBottomRight: { from: 11, to: 11 },
+        bodyCornerBottomLeft: { from: 12, to: 12 },
+        bodyCornerTopLeft: { from: 13, to: 13 },
       },
     });
+  }
+
+  // creates a startsnake from 1 head, 1 body and 1 tail element
+  respawn_snake() {
+    this.snakeSprite();
 
     this.snakeBody.forEach((segment) => {
       destroy(segment);
     });
     this.snakeBody = [];
     this.snake_length = 3;
-
+    // add startsnake-head
     let head = k.add([
-      k.sprite(this.spriteName, { anim: "snakeHeadBottomAnim" }),
+      k.sprite(this.spriteName, { anim: "headGoDown" }),
       k.pos(2 * this.fieldsize, this.fieldsize * 3),
       k.area(),
       this.spriteName,
     ]);
     this.snakeBody.push(head);
-
+    // add startsnake-body
     let body = k.add([
-      k.sprite(this.spriteName, { anim: "snakeBodyHorizontalAnim" }),
+      k.sprite(this.spriteName, { anim: "bodyGoVertical" }),
       k.pos(2 * this.fieldsize, this.fieldsize * 2),
       k.area(),
       this.spriteName,
     ]);
     this.snakeBody.push(body);
-
+    // add startsnake-tail
     let tail = k.add([
-      k.sprite(this.spriteName, { anim: "snakeTailTopAnim" }),
+      k.sprite(this.spriteName, { anim: "tailGoDown" }),
       k.pos(2 * this.fieldsize, this.fieldsize * 1),
       k.area(),
       this.spriteName,
@@ -97,6 +84,7 @@ export default class Snake {
     this.current_direction = "down";
   }
 
+  //respawns the snake
   respawn_all() {
     this.run_action = false;
     // k.wait(0.75, function () {
@@ -105,7 +93,37 @@ export default class Snake {
     // });
   }
 
+  // adds a segment when fruit was eaten
+  addSegment() {
+    let currentFrame = this.snakeBody[this.snakeBody.length - 1].frame; // last Element in array
+    let tailSprite = "";
+    if (currentFrame == 4) {
+      currentFrame = 8; //bodyGoVertical
+      tailSprite = "tailGoDown";
+    } else if (currentFrame == 6) {
+      currentFrame = 8; //bodyGoVertical
+      tailSprite = "tailGoTop";
+    } else if (currentFrame == 5) {
+      currentFrame = 9; //bodyGoHorizontal
+      tailSprite = "tailGoLeft";
+    } else if (currentFrame == 7) {
+      currentFrame = 9; //bodyGoHorizontal
+      tailSprite = "tailGoRight";
+    }
+    let tail = k.add([
+      k.sprite(this.spriteName, { anim: tailSprite }),
+      k.pos(
+        this.snakeBody[this.snakeBody.length - 1].pos.x,
+        this.snakeBody[this.snakeBody.length - 1].pos.y
+      ),
+      k.area(),
+      this.spriteName,
+    ]);
+    this.snakeBody.push(tail);
+  }
+
   movement() {
+    // move directions
     k.onKeyPress("up", () => {
       if (this.current_direction != "down") {
         this.current_direction = "up";
@@ -130,6 +148,7 @@ export default class Snake {
       }
     });
 
+    // updating the movement every frame
     let timer = 0;
     k.onUpdate(() => {
       if (!this.run_action) return;
@@ -143,214 +162,94 @@ export default class Snake {
       let positionsX = [];
       let positionsY = [];
       this.snakeBody.forEach((seg) => {
-        console.log(seg.pos);
         positionsX.push(seg.pos.x);
         positionsY.push(seg.pos.y);
       });
 
-      console.log(positionsX)
-      console.log(positionsY)
-
       // gives the direction of the snake defined by the snakes head
       switch (this.current_direction) {
-        case "up":
-          move_x = 0;
-          move_y = -1 * this.fieldsize;
-          this.snakeBody[0].frame = 0;
-          this.snakeBody[0].pos.y = this.snakeBody[0].pos.y + move_y;
-          break;
-        case "right":
-          move_x = this.fieldsize;
-          move_y = 0;
-          this.snakeBody[0].frame = 1;
-          this.snakeBody[0].pos.x = this.snakeBody[0].pos.x + move_x;
-          break;
         case "down":
           move_x = 0;
           move_y = this.fieldsize;
-          this.snakeBody[0].frame = 2;
+          this.snakeBody[0].frame = 0;
           this.snakeBody[0].pos.y = this.snakeBody[0].pos.y + move_y;
           break;
         case "left":
           move_x = -1 * this.fieldsize;
+          move_y = 0;
+          this.snakeBody[0].frame = 1;
+          this.snakeBody[0].pos.x = this.snakeBody[0].pos.x + move_x;
+          break;
+        case "up":
+          move_x = 0;
+          move_y = -1 * this.fieldsize;
+          this.snakeBody[0].frame = 2;
+          this.snakeBody[0].pos.y = this.snakeBody[0].pos.y + move_y;
+          break;
+        case "right":
+          move_x = this.fieldsize;
           move_y = 0;
           this.snakeBody[0].frame = 3;
           this.snakeBody[0].pos.x = this.snakeBody[0].pos.x + move_x;
           break;
       }
 
+      //loop to add sprites to body elements and tail elements
       for (var i = 1; i < this.snakeBody.length; i++) {
         this.snakeBody[i].pos.x = positionsX[i - 1];
         this.snakeBody[i].pos.y = positionsY[i - 1];
-        
-      }
-      
 
-      // this.snakeBody.forEach((seg, idx) => {
-      //   if (idx > 0) {
-      //     seg.pos.x = positions[idx - 1].x; // new position to every segment
-      //     seg.pos.y = positions[idx - 1].y; // new position to every segment
-      //     return seg;
-      //   }
-      // });
-
-      //add spritesheets to snake
-      // let animName;
-      // let oldHeadNewBody = this.snakeBody[this.snakeBody.length - 1]; // Get the last element (the snake head)
-      // let tail = this.snakeBody[1];
-
-      // for (var i = 0; i < this.snakeBody.length; i++) {
-      //   console.log(i);
-      //   var segment = this.snakeBody[i];
-      //   var segPosX = segment.pos.x;
-      //   var segPosY = segment.pos.y;
-      //   console.log(segment.pos.x);
-
-      //   let nseg = this.snakeBody[i + 1]; // Next segment
-      //   let pseg = this.snakeBody[i - 1]; // Prev segment
-      // }
-      //HEAD:
-      //move right
-      //   if (move_x == this.fieldsize && move_y == 0) {
-      //     animName = "snakeHeadRightAnim";
-      //     oldHeadNewBody.frame = 8; //snakeBodyVerticalAnim
-      //     tail.frame = 7; // snakeTailLeftAnim
-      //     //move down
-      //   } else if (move_x == 0 && move_y == this.fieldsize) {
-      //     animName = "snakeHeadBottomAnim";
-      //     oldHeadNewBody.frame = 9; // snakeBodyHorizontalAnim
-      //     tail.frame = 4; // snakeTailTopAnim
-      //     //move left
-      //   } else if (move_x == -1 * this.fieldsize && move_y == 0) {
-      //     animName = "snakeHeadLeftAnim";
-      //     oldHeadNewBody.frame = 8; //snakeBodyVerticalAnim
-      //     tail.frame = 5; // snakeTailRightAnim
-      //     //move up
-      //   } else if (move_x == 0 && move_y == -1 * this.fieldsize) {
-      //     animName = "snakeHeadTopAnim";
-      //     oldHeadNewBody.frame = 9; //snakeBodyHorizontalAnim
-      //     tail.frame = 6; // snakeTailBottomAnim
-      //   }
-
-      //   let newHead = k.add([
-      //     k.sprite(this.spriteName, { anim: animName }),
-      //     k.pos(oldHeadNewBody.pos.x + move_x, oldHeadNewBody.pos.y + move_y),
-      //     k.area(),
-      //     this.spriteName,
-      //   ]);
-      //   this.snakeBody.push(newHead);
-      //   newHead.pos = vec2(500,200);
-
-      //   if (this.snakeBody.length > this.snake_length) {
-      //     let removeTail = this.snakeBody.shift(); // Remove the last of the tail
-      //     k.destroy(removeTail);
-      //   }
-    });
-  }
-
-  // Copyright (c) 2015 Rembound.com
-  // not working yet:
-  drawSnakeSprite() {
-    // Loop over every snake segment
-    for (var i = 0; i < this.snakeBody.length; i++) {
-      var segment = this.snakeBody[i];
-      var segx = segment.x;
-      var segy = segment.y;
-      // var tilex = segx*Config.fieldsize;
-      // var tiley = segy*Config.fieldsize;
-
-      // Sprite column and row that gets calculated
-      // var tx = 0;
-      // var ty = 0;
-
-      if (i == 0) {
-        // Head; Determine the correct image
-        let nseg = this.snakeBody[i + 1]; // Next segment
-        if (segy < nseg.y) {
-          // Up
-          segment.play("snakeHeadTopAnim");
-          // tx = 3; ty = 0;
-        } else if (segx > nseg.x) {
-          // Right
-          segment.play("snakeHeadRightAnim");
-          // tx = 4; ty = 0;
-        } else if (segy > nseg.y) {
-          // Down
-          segment.play("snakeHeadBottomAnim");
-          // tx = 4; ty = 1;
-        } else if (segx < nseg.x) {
-          // Left
-          segment.play("snakeHeadLeftAnim");
-          // tx = 3; ty = 1;
-        }
-      } else if (i == this.snakeBody.length - 1) {
-        // Tail; Determine the correct image
         let pseg = this.snakeBody[i - 1]; // Prev segment
-        if (pseg.y < segy) {
-          // Up
-          segment.play("snakeTailBottomAnim");
-          // tx = 3; ty = 2;
-        } else if (pseg.x > segx) {
-          // Right
-          segment.play("snakeTailRightAnim");
-          // tx = 4; ty = 2;
-        } else if (pseg.y > segy) {
-          // Down
-          segment.play("snakeTailTopAnim");
-          // tx = 4; ty = 3;
-        } else if (pseg.x < segx) {
-          // Left
-          segment.play("snakeTailLeftAnim");
-          // tx = 3; ty = 3;
-        }
-      } else {
-        // Body; Determine the correct image
-        let pseg = this.snakeBody[i - 1]; // Previous segment
         let nseg = this.snakeBody[i + 1]; // Next segment
-        if (
-          (pseg.x < segx && nseg.x > segx) ||
-          (nseg.x < segx && pseg.x > segx)
-        ) {
-          // Horizontal Left-Right
-          segment.play("snakeTailLeftAnim");
-          // tx = 1; ty = 0;
-        } else if (
-          (pseg.x < segx && nseg.y > segy) ||
-          (nseg.x < segx && pseg.y > segy)
-        ) {
-          // Angle Left-Down
-          segment.play("snakeCornerRightTopAnim");
-          // tx = 2; ty = 0;
-        } else if (
-          (pseg.y < segy && nseg.y > segy) ||
-          (nseg.y < segy && pseg.y > segy)
-        ) {
-          // Vertical Up-Down
-          segment.play("snakeBodyVerticalAnim");
-          // tx = 2; ty = 1;
-        } else if (
-          (pseg.y < segy && nseg.x < segx) ||
-          (nseg.y < segy && pseg.x < segx)
-        ) {
-          // Angle Top-Left
-          segment.play("snakeCornerRightBotAnim");
-          // tx = 2; ty = 2;
-        } else if (
-          (pseg.x > segx && nseg.y < segy) ||
-          (nseg.x > segx && pseg.y < segy)
-        ) {
-          // Angle Right-Up
-          segment.play("snakeCornerLefttopAnim");
-          // tx = 0; ty = 1;
-        } else if (
-          (pseg.y > segy && nseg.x > segx) ||
-          (nseg.y > segy && pseg.x > segx)
-        ) {
-          // Angle Down-Right
-          segment.play("snakeCornerLeftBotAnim");
-          // tx = 0; ty = 0;
+        let seg = this.snakeBody[i];
+
+        //tail sprite:
+        if (i == this.snakeBody.length - 1) {
+          if (pseg.pos.y > seg.pos.y) {
+            seg.frame = 4; //tailGoDown
+          } else if (pseg.pos.x < seg.pos.x) {
+            seg.frame = 5; //tailGoLeft
+          } else if (pseg.pos.y < seg.pos.y) {
+            seg.frame = 6; //tailGoTop
+          } else if (pseg.pos.x > seg.pos.x) {
+            seg.frame = 7; //tailGoRight
+          }
+
+          //body sprite
+        } else if (i != this.snakeBody.length - 1 || i != 0) {
+          if (
+            (pseg.pos.x < seg.pos.x && nseg.pos.x > seg.pos.x) ||
+            (nseg.pos.x < seg.pos.x && pseg.pos.x > seg.pos.x)
+          ) {
+            seg.frame = 9; //bodyGoHorizontal
+          } else if (
+            (pseg.pos.y < seg.pos.y && nseg.pos.y > seg.pos.y) ||
+            (nseg.pos.y < seg.pos.y && pseg.pos.y > seg.pos.y)
+          ) {
+            seg.frame = 8; //bodyGoVertical
+          } else if (
+            (pseg.pos.x < seg.pos.x && nseg.pos.y > seg.pos.y) ||
+            (nseg.pos.x < seg.pos.x && pseg.pos.y > seg.pos.y)
+          ) {
+            seg.frame = 10; //bodyCornerTopRight
+          } else if (
+            (pseg.pos.y < seg.pos.y && nseg.pos.x < seg.pos.x) ||
+            (nseg.pos.y < seg.pos.y && pseg.pos.x < seg.pos.x)
+          ) {
+            seg.frame = 11; //bodyCornerBottomRight
+          } else if (
+            (pseg.pos.x > seg.pos.x && nseg.pos.y < seg.pos.y) ||
+            (nseg.pos.x > seg.pos.x && pseg.pos.y < seg.pos.y)
+          ) {
+            seg.frame = 12; //bodyCornerBottomLeft
+          } else if (
+            (pseg.pos.y > seg.pos.y && nseg.pos.x > seg.pos.x) ||
+            (nseg.pos.y > seg.pos.y && pseg.pos.x > seg.pos.x)
+          ) {
+            seg.frame = 13; //bodyCornerTopLeft
+          }
         }
       }
-    }
+    });
   }
 }

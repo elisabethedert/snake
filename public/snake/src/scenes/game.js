@@ -18,7 +18,6 @@ export default function Game() {
   collision.showScoreLabel();
   collision.collide(snake, sprites);
 
-  snake.respawn_snake();
   snake.respawn_all();
   snake.movement();
 }

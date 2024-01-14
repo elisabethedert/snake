@@ -37,7 +37,7 @@ export default class Collsion {
       snake.isSupersnake = false;
       this.score++;
       this.addCollisionObjectandSpeed(snake, sprites);
-      snake.snake_length++;
+      snake.addSegment();
       sprites.showFruit();
       this.showScoreLabel();
     });
