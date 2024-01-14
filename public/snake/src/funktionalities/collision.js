@@ -1,6 +1,4 @@
 import k from "../kaboom";
-
-import Sprites from "./sprites";
 import Config from "../config/config.json";
 
 export default class Collsion {

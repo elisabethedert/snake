@@ -1,4 +1,3 @@
-import k from "../kaboom";
 import Layout from "../funktionalities/layout";
 import Snake from "../funktionalities/snake";
 import Sprites from "../funktionalities/sprites";

@@ -1,6 +1,5 @@
 import k from "../kaboom";
 import Config from "../config/config.json";
-
 export default class Snake {
   // snake-functions are inspired by "Copyright (c) 2015 Rembound.com" and "Replid Snake Tutorial by Ritza"
 
@@ -98,16 +97,16 @@ export default class Snake {
     let currentFrame = this.snakeBody[this.snakeBody.length - 1].frame; // last Element in array
     let tailSprite = "";
     if (currentFrame == 4) {
-      currentFrame = 8; //bodyGoVertical
+      currentFrame = 8; // bodyGoVertical
       tailSprite = "tailGoDown";
     } else if (currentFrame == 6) {
-      currentFrame = 8; //bodyGoVertical
+      currentFrame = 8; // bodyGoVertical
       tailSprite = "tailGoTop";
     } else if (currentFrame == 5) {
-      currentFrame = 9; //bodyGoHorizontal
+      currentFrame = 9; // bodyGoHorizontal
       tailSprite = "tailGoLeft";
     } else if (currentFrame == 7) {
-      currentFrame = 9; //bodyGoHorizontal
+      currentFrame = 9; // bodyGoHorizontal
       tailSprite = "tailGoRight";
     }
     let tail = k.add([
@@ -194,7 +193,7 @@ export default class Snake {
           break;
       }
 
-      //loop to add sprites to body elements and tail elements
+      // loop to add sprites to body elements and tail elements
       for (var i = 1; i < this.snakeBody.length; i++) {
         this.snakeBody[i].pos.x = positionsX[i - 1];
         this.snakeBody[i].pos.y = positionsY[i - 1];
@@ -203,7 +202,7 @@ export default class Snake {
         let nseg = this.snakeBody[i + 1]; // Next segment
         let seg = this.snakeBody[i];
 
-        //tail sprite:
+        // tail sprite:
         if (i == this.snakeBody.length - 1) {
           if (pseg.pos.y > seg.pos.y) {
             seg.frame = 4; //tailGoDown
@@ -248,6 +247,7 @@ export default class Snake {
           ) {
             seg.frame = 13; //bodyCornerTopLeft
           }
+          //TODO: avoid interruptions when the snake moves in zigzags
         }
       }
     });

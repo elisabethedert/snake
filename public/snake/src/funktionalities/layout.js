@@ -39,12 +39,9 @@ export default class Layout {
   }
 
   addText(txt, posX, posY) {
-    // k.loadFont("lilitaone", "./assets/fonts/LilitaOne-Regular.ttf");
-
     k.add([
       k.text(
         txt
-        //  { font: "lilitaone" }
       ),
       k.pos(posX / 2, posY / 2),
       k.color(249, 121, 25),
@@ -61,7 +58,7 @@ export default class Layout {
   buildPlayground() {
     this.addImage("bg");
 
-    //add tilemap 30x 20 Fields inside of Bricks
+    // add tilemap 15 x 10 Fields inside of Bricks
     k.addLevel(
       [
         "=================",
