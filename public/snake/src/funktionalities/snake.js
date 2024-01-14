@@ -20,7 +20,8 @@ export default class Snake {
   }
 
   // loads the snake sprite
-  // TODO:  move to sprite class for consistency
+  // TODO: move to sprite class for consistency
+  // TODO: close gap between snake segments
   snakeSprite() {
     k.loadSprite(this.spriteName, "sprites/snakeSpriteBody.png", {
       sliceX: 14,
