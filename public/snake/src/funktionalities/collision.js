@@ -10,6 +10,8 @@ export default class Collsion {
     this.score = 0;
   }
 
+  // shows score
+  // TODO: move to layout class for consistency
   showScoreLabel() {
     if (this.scoreLabel) {
       k.destroy(this.scoreLabel);
@@ -21,11 +23,13 @@ export default class Collsion {
     ]);
   }
 
+  // handels collisions 
   collide(snake, sprites) {
     k.onCollide(snake.spriteName, "superfruit", (s, f) => {
       snake.isSupersnake = true;
       sprites.showFruit();
       this.showScoreLabel();
+      //TODO: use timeout
       // setTimeout(function () {
       //   this.isSupersnake = false;
       //   console.log(this.isSupersnake);
@@ -58,8 +62,12 @@ export default class Collsion {
       snake.addSpeed(0.05);
       sprites.showObstacles("mole");
     } else if (this.score % 9 === 0) {
-      snake.addSpeed(0.1);
+      snake.addSpeed(0.075);
       sprites.showObstacles("bush");
     }
+  }
+
+  collisionSnakeWithItself() {
+    //TODO
   }
 }

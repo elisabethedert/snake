@@ -1,27 +1,27 @@
 import k from "../kaboom";
 import Config from "../config/config.json";
 
-//Snake Tutorial by Ritza
 export default class Snake {
   // snake-functions are inspired by "Copyright (c) 2015 Rembound.com" and "Replid Snake Tutorial by Ritza"
 
   constructor() {
     this.fieldsize = Config.fieldsize;
-
     this.current_direction = "right";
     this.run_action = false;
     this.snake_length = 3;
     this.snakeBody = [];
     this.isSupersnake = false;
     this.spriteName = "snake";
-
     this.speed = Config.speed;
   }
 
+  // makes the snake faster
   addSpeed(faster) {
     this.speed = this.speed - faster;
   }
 
+  // loads the snake sprite
+  // TODO:  move to sprite class for consistency
   snakeSprite() {
     k.loadSprite(this.spriteName, "sprites/snakeSpriteBody.png", {
       sliceX: 14,
@@ -84,7 +84,7 @@ export default class Snake {
     this.current_direction = "down";
   }
 
-  //respawns the snake
+  // respawns the snake
   respawn_all() {
     this.run_action = false;
     // k.wait(0.75, function () {

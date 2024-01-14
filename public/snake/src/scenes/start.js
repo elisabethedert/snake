@@ -5,26 +5,38 @@ import Sprites from "../funktionalities/sprites";
 import Layout from "../funktionalities/layout";
 import Config from "../config/config.json";
 
-
 k.scene("Game", Game);
 k.scene("Navigation", Navigation);
 
-
+// start scene, from where the game can be started
 export default function Start(score) {
-
   let layout = new Layout();
   let sprites = new Sprites(Config.fieldsize);
-  
-  layout.addImage("bg-start")
-  sprites.loadSpriteSnakeHead();
-  
-  if(score == null) {
-    layout.addText("Willkommen zu Snake", Config.width, Config.height+50);
-    layout.addButton(220, 70, "Spielen", 245, 480, () => k.go("Game"));
-    layout.addButton(220, 70, "Steuerung", 605, 480, () => k.go("Navigation"));
-  } else {
-    layout.addText("Du hast " + score + " Früchte gefressen", Config.width, Config.height+50);
-    layout.addButton(220, 70, "Nochmal?", 245, 480, () => k.go("Game"));
-    layout.addButton(220, 70, "Steuerung", 605, 480, () => k.go("Navigation"));
 
-  }}
+  layout.addImage("bg-start");
+  sprites.loadSpriteSnakeHead();
+
+  if (score == null) {
+    // show start scene with welcome-text
+    layout.addText("Willkommen zu Snake", Config.width, 480);
+    layout.addButton(220, 70, "Spielen", 245, 400, () => k.go("Game"));
+    layout.addButton(220, 70, "Steuerung", 605, 400, () => k.go("Navigation"));
+  } else {
+    // show start scene with score
+    if (score == 1) {
+      layout.addText(
+        "Du hast " + score + " Frucht gefressen",
+        Config.width,
+        480
+      );
+    } else {
+      layout.addText(
+        "Du hast " + score + " Früchte gefressen",
+        Config.width,
+        480
+      );
+    }
+    layout.addButton(220, 70, "Nochmal?", 245, 400, () => k.go("Game"));
+    layout.addButton(220, 70, "Steuerung", 605, 400, () => k.go("Navigation"));
+  }
+}

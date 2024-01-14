@@ -4,6 +4,7 @@ import Snake from "../funktionalities/snake";
 import Sprites from "../funktionalities/sprites";
 import Collision from "../funktionalities/collision";
 
+// game scene
 export default function Game() {
 
   let layout = new Layout();

@@ -1,10 +1,11 @@
 import k from "../kaboom";
 import Config from "../config/config.json";
 
+// contains sprite animations
 export default class Sprites {
   constructor() {
     this.fieldsize = Config.fieldsize;
-    this.width = Config.width
+    this.width = Config.width;
     this.fruitArr = [
       "strawberry",
       "apple",
@@ -18,7 +19,10 @@ export default class Sprites {
     this.obstacle = null;
   }
 
-  loadSpriteSnakeHead(){
+  //TODO: animation where the snake is shaking because of collision with obstacle
+  //TODO: animation where the snake opens mouth to eat fruit
+
+  loadSpriteSnakeHead() {
     k.loadSprite("snakeTung", "sprites/snakeTung.png", {
       sliceX: 14,
       sliceY: 1,
@@ -29,11 +33,10 @@ export default class Sprites {
         },
       },
     });
-    
+
     k.add([
       k.sprite("snakeTung", { anim: "tung" }),
-      k.scale(1.75),
-      k.pos(this.width / 2, 120),
+      k.pos(this.width / 2, 70),
       rotate(90),
       k.anchor("center"),
     ]);
@@ -41,6 +44,7 @@ export default class Sprites {
 
   loadSprite(name) {
     if (this.fruitArr.includes(name)) {
+      // if the spriteName name is a fruit
       k.loadSprite("fruitSprite", "sprites/" + name + ".png", {
         sliceX: 6,
         sliceY: 1,
@@ -52,6 +56,7 @@ export default class Sprites {
         },
       });
     } else {
+      // if the spriteName is not a fruit
       k.loadSprite("oSprite", "sprites/" + name + ".png", {
         sliceX: 6,
         sliceY: 1,
@@ -65,44 +70,42 @@ export default class Sprites {
     }
   }
 
+  // generates a random fruit of the fruitList
   randomFruit(fruitList) {
     return fruitList[Math.floor(Math.random() * fruitList.length)];
   }
 
   // add fruits to game
   showFruit() {
+    // if a fruit already exists, it should be destroyed to build a new fruit
+    if (this.fruit) {
+      destroy(this.fruit);
+    }
+
+    // generate a random fruit position
     var fruitPosition = k.rand(vec2(2, 2), vec2(15, 11));
 
     fruitPosition.x = Math.floor(fruitPosition.x);
     fruitPosition.y = Math.floor(fruitPosition.y);
     fruitPosition = fruitPosition.scale(this.fieldsize);
 
-    if (this.fruit) {
-      destroy(this.fruit);
-    }
-
+    // get a random fruit and name the object by its type (superfruit or normal fruit)
     let randFruit = this.randomFruit(this.fruitArr);
+    let fruitType;
+
     if (randFruit == "superfruits") {
-      this.loadSprite(randFruit);
-      console.log("hier steht superfruit:" + randFruit);
-
-      this.fruit = add([
-        k.pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
-        k.sprite("fruitSprite"),
-        k.area(),
-        "superfruit",
-      ]);
+      fruitType = "superfruit";
     } else {
-      this.loadSprite(randFruit);
-      console.log("normale Frucht:" + randFruit);
-
-      this.fruit = add([
-        k.pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
-        k.sprite("fruitSprite"),
-        k.area(),
-        "fruit",
-      ]);
+      fruitType = "fruit";
     }
+
+    this.loadSprite(randFruit);
+    this.fruit = add([
+      k.pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
+      k.sprite("fruitSprite"),
+      k.area(),
+      fruitType,
+    ]);
 
     this.fruit.play("anim");
 
@@ -111,25 +114,26 @@ export default class Sprites {
     this.fruitPositionAllY = this.fruit.pos.y;
   }
 
+  // adds obstacles to game
   showObstacles(obstacleSprite) {
-    var obstaclePosition = k.rand(vec2(1, 2), vec2(15, 11));
-
-    obstaclePosition.x = Math.floor(obstaclePosition.x);
-    obstaclePosition.y = Math.floor(obstaclePosition.y);
-    obstaclePosition = obstaclePosition.scale(this.fieldsize);
-
-    let obstacle = this.obstacle;
-
+    // if a obstacle already exists, it should be destroyed to build a new obstacle
     if (this.obstacle) {
       k.destroy(this.obstacle);
     }
 
-    this.loadSprite(obstacleSprite);
+    // generate a random obstace position
+    var obstaclePosition = k.rand(vec2(1, 2), vec2(15, 11));
+    obstaclePosition.x = Math.floor(obstaclePosition.x);
+    obstaclePosition.y = Math.floor(obstaclePosition.y);
+    obstaclePosition = obstaclePosition.scale(this.fieldsize);
 
+    // avoid that obstacles and food can have the same positions
+    let obstacle = this.obstacle;
     if (
       this.fruitPositionAllX !== obstaclePosition.x + 0.1 &&
       this.fruitPositionAllY !== obstaclePosition.y + 0.1
     ) {
+      this.loadSprite(obstacleSprite);
       k.wait(1, function () {
         obstacle = add([
           k.pos(obstaclePosition.x + 0.1, obstaclePosition.y + 0.1),

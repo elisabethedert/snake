@@ -7,7 +7,6 @@ export default class Layout {
   addButton(rectX, rectY, txt, posX, posY, scene) {
     let text = add([
       k.rect(rectX, rectY),
-      k.color(0, 53, 0),
       k.pos(posX, posY),
       k.anchor("center"),
       k.area({ cursor: "pointer" }),
@@ -16,7 +15,6 @@ export default class Layout {
 
     let button = add([
       k.text(txt),
-      k.color(0, 53, 0),
       k.pos(posX, posY),
       k.anchor("center"),
       k.area({ cursor: "pointer" }),
@@ -28,11 +26,14 @@ export default class Layout {
     button.onUpdate(() => {
       if (button.isHovering() || text.isHovering()) {
         button.scale = vec2(1.05);
+        button.color = rgb(255, 255, 255);
         text.scale = vec2(1.05);
+        text.color = rgb(0, 53, 0);
       } else {
         button.scale = vec2(1);
-        button.color = rgb();
+        button.color = rgb(255, 255, 255);
         text.scale = vec2(1);
+        text.color = rgb(0, 53, 0);
       }
     });
   }
@@ -52,14 +53,13 @@ export default class Layout {
     ]);
   }
 
-  addImage(image){
-    k.loadSprite(image, "sprites/"+image+".png");
-    k.add([sprite(image),      
-    ]);
+  addImage(image) {
+    k.loadSprite(image, "sprites/" + image + ".png");
+    k.add([sprite(image)]);
   }
 
   buildPlayground() {
-    this.addImage("bg")
+    this.addImage("bg");
 
     //add tilemap 30x 20 Fields inside of Bricks
     k.addLevel(
@@ -94,5 +94,5 @@ export default class Layout {
         },
       }
     );
-}
+  }
 }
