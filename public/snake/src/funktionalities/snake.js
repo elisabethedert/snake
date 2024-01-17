@@ -7,7 +7,7 @@ export default class Snake {
     this.fieldsize = Config.fieldsize;
     this.current_direction = "right";
     this.run_action = false;
-    this.snake_length = 3;
+    this.snake_length = 2;
     this.snakeBody = [];
     this.isSupersnake = false;
     this.spriteName = "snake";
@@ -56,7 +56,7 @@ export default class Snake {
       destroy(segment);
     });
     this.snakeBody = [];
-    this.snake_length = 3;
+    this.snake_length = 2;
     // add startsnake-head
     let head = k.add([
       k.sprite(this.spriteName, { anim: "headGoDown" }),
@@ -65,18 +65,9 @@ export default class Snake {
       this.spriteName,
     ]);
     this.snakeBody.push(head);
-    // add startsnake-body
-    let body = k.add([
-      k.sprite(this.spriteName, { anim: "bodyGoVertical" }),
-      k.pos(2 * this.fieldsize, this.fieldsize * 2),
-      k.area(),
-      this.spriteName,
-    ]);
-    this.snakeBody.push(body);
-    // add startsnake-tail
     let tail = k.add([
       k.sprite(this.spriteName, { anim: "tailGoDown" }),
-      k.pos(2 * this.fieldsize, this.fieldsize * 1),
+      k.pos(2 * this.fieldsize, this.fieldsize * 2),
       k.area(),
       this.spriteName,
     ]);
@@ -251,6 +242,13 @@ export default class Snake {
           //TODO: avoid interruptions when the snake moves in zigzags
         }
       }
+
+  reduceSnakeLength(collisionIndex) {
+    this.snakeBody.forEach((segment, segIndex) => {
+      if (segIndex >= collisionIndex) {
+        k.destroy(segment);
+      }
     });
+    this.snakeBody.length = collisionIndex;
   }
 }

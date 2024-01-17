@@ -65,7 +65,20 @@ export default class Collsion {
     }
   }
 
-  collisionSnakeWithItself() {
-    //TODO
+  collisionSnakeWithItself(snake) {
+    for (var collisionIndex = 1; collisionIndex < snake.snakeBody.length; collisionIndex++) {
+      let seg = snake.snakeBody[collisionIndex];
+      if (
+        snake.snakeBody[0].pos.x == seg.pos.x &&
+        snake.snakeBody[0].pos.y == seg.pos.y
+      ) {
+        snake.reduceSnakeLength(collisionIndex);
+        this.score = snake.snakeBody.length - 2;
+        if (this.score < 0) {
+          this.score = 0;
+        }
+        this.showScoreLabel();
+      }
+    }
   }
 }
