@@ -77,6 +77,7 @@ export default class Sprites {
 
   // add fruits to game
   showFruit() {
+    k.loadSound("fruit", "sound/fruit.mp3")
     // if a fruit already exists, it should be destroyed to build a new fruit
     if (this.fruit) {
       destroy(this.fruit);
@@ -108,6 +109,7 @@ export default class Sprites {
     ]);
 
     this.fruit.play("anim");
+    k.play("fruit")
 
     // avoid that obstacles and food can have the same positions
     this.fruitPositionAllX = this.fruit.pos.x;
@@ -116,6 +118,9 @@ export default class Sprites {
 
   // adds obstacles to game
   showObstacles(obstacleSprite) {
+    k.loadSound("bush", "sound/bush.mp3")
+    k.loadSound("mole", "sound/mole.mp3")
+
     // if a obstacle already exists, it should be destroyed to build a new obstacle
     if (this.obstacle) {
       k.destroy(this.obstacle);
@@ -142,6 +147,11 @@ export default class Sprites {
           "obstacle",
         ]);
         obstacle.play("anim");
+        if(obstacleSprite == "bush") {
+          k.play("bush")
+        } else if(obstacleSprite == "mole"){
+          k.play("mole")
+        }
       });
     } else {
       this.showObstacles(obstacleSprite);

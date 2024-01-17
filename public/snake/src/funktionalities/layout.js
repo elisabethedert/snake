@@ -5,6 +5,7 @@ export default class Layout {
   constructor() {}
 
   addButton(rectX, rectY, txt, posX, posY, scene) {
+    k.loadSound("buttonclick", "sound/button.mp3");
     let text = add([
       k.rect(rectX, rectY),
       k.pos(posX, posY),
@@ -21,7 +22,10 @@ export default class Layout {
       "button",
     ]);
 
-    button.onClick(scene);
+    button.onClick(() => {
+      k.play("buttonclick");
+      k.go(scene);
+    });
 
     button.onUpdate(() => {
       if (button.isHovering() || text.isHovering()) {

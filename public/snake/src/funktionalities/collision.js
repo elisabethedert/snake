@@ -21,10 +21,15 @@ export default class Collsion {
     ]);
   }
 
-  // handels collisions 
+  // handels collisions
   collide(snake, sprites) {
+    k.loadSound("eat", "sound/eat.mp3");
+    k.loadSound("powerup", "sound/powerup.mp3");
+    k.loadSound("bonk", "sound/bonk.mp3");
+
     k.onCollide(snake.spriteName, "superfruit", (s, f) => {
       snake.isSupersnake = true;
+      k.play("powerup");
       sprites.showFruit();
       this.showScoreLabel();
       //TODO: use timeout
@@ -36,6 +41,7 @@ export default class Collsion {
     });
 
     k.onCollide(snake.spriteName, "fruit", (s, sf) => {
+      k.play("eat");
       snake.isSupersnake = false;
       this.score++;
       this.addCollisionObjectandSpeed(snake, sprites);
@@ -46,11 +52,13 @@ export default class Collsion {
 
     k.onCollide(snake.spriteName, "brick", (s, b) => {
       k.go("Start", this.score);
+      k.play("bonk");
     });
 
     k.onCollide(snake.spriteName, "obstacle", (s, m) => {
       if (snake.isSupersnake == false) {
         k.go("Start", this.score);
+        k.play("bonk");
       }
     });
   }
@@ -72,6 +80,7 @@ export default class Collsion {
         snake.snakeBody[0].pos.x == seg.pos.x &&
         snake.snakeBody[0].pos.y == seg.pos.y
       ) {
+        k.play("eat");
         snake.reduceSnakeLength(collisionIndex);
         this.score = snake.snakeBody.length - 2;
         if (this.score < 0) {
