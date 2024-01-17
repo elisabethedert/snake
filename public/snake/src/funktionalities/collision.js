@@ -25,7 +25,7 @@ export default class Collsion {
   collide(snake, sprites) {
     k.loadSound("eat", "sound/eat.mp3");
     k.loadSound("powerup", "sound/powerup.mp3");
-    k.loadSound("bonk", "sound/bonk.mp3");
+    k.loadSound("crash", "sound/crash.mp3");
 
     k.onCollide(snake.spriteName, "superfruit", (s, f) => {
       snake.isSupersnake = true;
@@ -51,14 +51,44 @@ export default class Collsion {
     });
 
     k.onCollide(snake.spriteName, "brick", (s, b) => {
-      k.go("Start", this.score);
-      k.play("bonk");
+      sprites.showDust(
+        snake.snakeBody[0].pos.x,
+        snake.snakeBody[0].pos.y,
+        snake.current_direction
+      );
+
+      k.play("crash");
+      snake.snakeBody.forEach((segment) => {
+        k.destroy(segment);
+      });
+
+      k.wait(1, () => {
+        k.go("Start", this.score);
+      });
     });
 
     k.onCollide(snake.spriteName, "obstacle", (s, m) => {
       if (snake.isSupersnake == false) {
-        k.go("Start", this.score);
-        k.play("bonk");
+        sprites.showDust(
+          snake.snakeBody[0].pos.x,
+          snake.snakeBody[0].pos.y,
+          snake.current_direction
+        );
+
+        k.play("crash");
+        snake.snakeBody.forEach((segment) => {
+          k.destroy(segment);
+        });
+
+        k.wait(1, () => {
+          k.go("Start", this.score);
+        });
+      }
+    });
+
+    k.onUpdate(() => {
+      if (snake.isSupersnake == false) {
+        this.collisionSnakeWithItself(snake);
       }
     });
   }
@@ -74,7 +104,11 @@ export default class Collsion {
   }
 
   collisionSnakeWithItself(snake) {
-    for (var collisionIndex = 1; collisionIndex < snake.snakeBody.length; collisionIndex++) {
+    for (
+      var collisionIndex = 1;
+      collisionIndex < snake.snakeBody.length;
+      collisionIndex++
+    ) {
       let seg = snake.snakeBody[collisionIndex];
       if (
         snake.snakeBody[0].pos.x == seg.pos.x &&

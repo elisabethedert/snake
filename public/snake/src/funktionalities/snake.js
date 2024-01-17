@@ -12,6 +12,7 @@ export default class Snake {
     this.isSupersnake = false;
     this.spriteName = "snake";
     this.speed = Config.speed;
+    this.isCollided = false;
   }
 
   // makes the snake faster
@@ -242,6 +243,8 @@ export default class Snake {
           //TODO: avoid interruptions when the snake moves in zigzags
         }
       }
+    });
+  }
 
   reduceSnakeLength(collisionIndex) {
     this.snakeBody.forEach((segment, segIndex) => {

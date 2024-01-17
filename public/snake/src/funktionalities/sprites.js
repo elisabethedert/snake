@@ -157,4 +157,44 @@ export default class Sprites {
       this.showObstacles(obstacleSprite);
     }
   }
+
+  showDust(snakePosX, snakePosY, direction) {
+    k.loadSprite("dust", "sprites/dust.png", {
+      sliceX: 6,
+      sliceY: 1,
+      anims: {
+        anim: {
+          from: 0,
+          to: 5,
+        },
+      },
+    });
+    
+    let dustPosX;
+    let dustPosY;
+
+    if (direction == "left") {
+      dustPosX = snakePosX + 0.25 * this.fieldsize;
+      dustPosY = snakePosY - 0.5 * this.fieldsize;
+    } else if (direction == "right") {
+      dustPosX = snakePosX - this.fieldsize;
+      dustPosY = snakePosY - 0.5 * this.fieldsize;
+    } else if (direction == "up") {
+      dustPosX = snakePosX - 0.25 * this.fieldsize;
+      dustPosY = snakePosY + 0.25 * this.fieldsize;
+    } else if (direction == "down") {
+      dustPosX = snakePosX - 0.25 * this.fieldsize;
+      dustPosY = snakePosY - this.fieldsize;
+    }
+
+    let dust = add([
+      k.pos(dustPosX, dustPosY),
+      k.sprite("dust"),
+      k.area(),
+      "dust",
+    ]);
+    dust.play("anim");
+
+
+  }
 }
