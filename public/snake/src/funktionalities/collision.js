@@ -11,11 +11,12 @@ export default class Collsion {
   // shows score
   // TODO: move to layout class for consistency
   showScoreLabel() {
+    k.loadFont("lilitaone", "font/LilitaOne-Regular.ttf")
     if (this.scoreLabel) {
       k.destroy(this.scoreLabel);
     }
     this.scoreLabel = k.add([
-      text(this.score),
+      text(this.score, {font:"lilitaone"}),
       pos(this.fieldsize / 2, this.fieldsize / 2),
       "scoreLabel",
     ]);

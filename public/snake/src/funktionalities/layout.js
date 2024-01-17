@@ -6,6 +6,7 @@ export default class Layout {
 
   addButton(rectX, rectY, txt, posX, posY, scene) {
     k.loadSound("buttonclick", "sound/button.mp3");
+    k.loadFont("lilitaone", "font/LilitaOne-Regular.ttf")
     let text = add([
       k.rect(rectX, rectY),
       k.pos(posX, posY),
@@ -15,7 +16,7 @@ export default class Layout {
     ]);
 
     let button = add([
-      k.text(txt),
+      k.text(txt, {font:"lilitaone"}),
       k.pos(posX, posY),
       k.anchor("center"),
       k.area({ cursor: "pointer" }),
@@ -43,13 +44,14 @@ export default class Layout {
   }
 
   addText(txt, posX, posY) {
+    k.loadFont("lilitaone", "font/LilitaOne-Regular.ttf")
     k.add([
       k.text(
-        txt
+        txt, {font:"lilitaone"}
       ),
       k.pos(posX / 2, posY / 2),
       k.color(249, 121, 25),
-      k.scale(1.3),
+      k.scale(1.5),
       k.anchor("center"),
     ]);
   }
