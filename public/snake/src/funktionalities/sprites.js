@@ -77,7 +77,7 @@ export default class Sprites {
 
   // add fruits to game
   showFruit() {
-    k.loadSound("fruit", "sound/fruit.mp3")
+    k.loadSound("fruit", "sound/fruit.mp3");
     // if a fruit already exists, it should be destroyed to build a new fruit
     if (this.fruit) {
       destroy(this.fruit);
@@ -85,7 +85,6 @@ export default class Sprites {
 
     // generate a random fruit position
     var fruitPosition = k.rand(vec2(2, 2), vec2(15, 11));
-
     fruitPosition.x = Math.floor(fruitPosition.x);
     fruitPosition.y = Math.floor(fruitPosition.y);
     fruitPosition = fruitPosition.scale(this.fieldsize);
@@ -93,7 +92,6 @@ export default class Sprites {
     // get a random fruit and name the object by its type (superfruit or normal fruit)
     let randFruit = this.randomFruit(this.fruitArr);
     let fruitType;
-
     if (randFruit == "superfruits") {
       fruitType = "superfruit";
     } else {
@@ -102,14 +100,14 @@ export default class Sprites {
 
     this.loadSprite(randFruit);
     this.fruit = add([
-      k.pos(fruitPosition.x + 0.1, fruitPosition.y + 0.1),
+      k.pos(fruitPosition.x, fruitPosition.y),
       k.sprite("fruitSprite"),
       k.area(),
       fruitType,
     ]);
 
     this.fruit.play("anim");
-    k.play("fruit")
+    k.play("fruit");
 
     // avoid that obstacles and food can have the same positions
     this.fruitPositionAllX = this.fruit.pos.x;
@@ -118,13 +116,9 @@ export default class Sprites {
 
   // adds obstacles to game
   showObstacles(obstacleSprite) {
-    k.loadSound("bush", "sound/bush.mp3")
-    k.loadSound("mole", "sound/mole.mp3")
-
-    // if a obstacle already exists, it should be destroyed to build a new obstacle
-    if (this.obstacle) {
-      k.destroy(this.obstacle);
-    }
+    k.loadSound("bush", "sound/bush.mp3");
+    k.loadSound("mole", "sound/mole.mp3");
+    k.destroyAll("obstacle");
 
     // generate a random obstace position
     var obstaclePosition = k.rand(vec2(1, 2), vec2(15, 11));
@@ -133,31 +127,34 @@ export default class Sprites {
     obstaclePosition = obstaclePosition.scale(this.fieldsize);
 
     // avoid that obstacles and food can have the same positions
-    let obstacle = this.obstacle;
+    let obstacle;
     if (
-      this.fruitPositionAllX !== obstaclePosition.x + 0.1 &&
-      this.fruitPositionAllY !== obstaclePosition.y + 0.1
+      this.fruitPositionAllX != obstaclePosition.x &&
+      this.fruitPositionAllY != obstaclePosition.y
     ) {
       this.loadSprite(obstacleSprite);
+      // wait 1 second to give the player a chance for orientation
       k.wait(1, function () {
         obstacle = add([
-          k.pos(obstaclePosition.x + 0.1, obstaclePosition.y + 0.1),
+          k.pos(obstaclePosition.x, obstaclePosition.y),
           k.sprite("oSprite"),
           k.area(),
           "obstacle",
         ]);
         obstacle.play("anim");
-        if(obstacleSprite == "bush") {
-          k.play("bush")
-        } else if(obstacleSprite == "mole"){
-          k.play("mole")
+        if (obstacleSprite == "bush") {
+          k.play("bush");
+        } else if (obstacleSprite == "mole") {
+          k.play("mole");
         }
       });
     } else {
       this.showObstacles(obstacleSprite);
     }
+    this.obstacle = obstacle;
   }
 
+  //shows dust sprite when the snake collides
   showDust(snakePosX, snakePosY, direction) {
     k.loadSprite("dust", "sprites/dust.png", {
       sliceX: 6,
@@ -169,10 +166,11 @@ export default class Sprites {
         },
       },
     });
-    
+
     let dustPosX;
     let dustPosY;
 
+    // get a goodposition for the dust
     if (direction == "left") {
       dustPosX = snakePosX + 0.25 * this.fieldsize;
       dustPosY = snakePosY - 0.5 * this.fieldsize;
@@ -194,7 +192,5 @@ export default class Sprites {
       "dust",
     ]);
     dust.play("anim");
-
-
   }
 }
