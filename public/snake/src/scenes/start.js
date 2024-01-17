@@ -19,8 +19,9 @@ export default function Start(score) {
   if (score == null) {
     // show start scene with welcome-text
     layout.addText("Willkommen zu Snake", Config.width, 480);
-    layout.addButton(220, 70, "Spielen", 245, 400, () => k.go("Game"));
-    layout.addButton(220, 70, "Steuerung", 605, 400, () => k.go("Navigation"));
+    layout.addButton(220, 70, "Spielen", 245, 400, "Game");
+    layout.addButton(220, 70, "Steuerung", 605, 400, "Navigation");
+    
   } else {
     // show start scene with score
     if (score == 1) {
@@ -36,7 +37,7 @@ export default function Start(score) {
         480
       );
     }
-    layout.addButton(220, 70, "Nochmal?", 245, 400, () => k.go("Game"));
-    layout.addButton(220, 70, "Steuerung", 605, 400, () => k.go("Navigation"));
+    layout.addButton(220, 70, "Nochmal?", 245, 400,"Game");
+    layout.addButton(220, 70, "Steuerung", 605, 400, "Navigation");
   }
 }
