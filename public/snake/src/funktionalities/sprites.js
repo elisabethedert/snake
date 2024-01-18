@@ -149,7 +149,6 @@ export default class Sprites {
     } else {
       this.showObstacles(obstacleSprite);
     }
-    this.obstacle = obstacle;
   }
 
   //shows dust sprite when the snake collides

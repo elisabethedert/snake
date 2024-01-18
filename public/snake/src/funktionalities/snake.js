@@ -182,61 +182,62 @@ export default class Snake {
           break;
       }
 
-      // loop to add sprites to body elements and tail elements
+      // update body and tail positions and add sprites
       for (var i = 1; i < this.snakeBody.length; i++) {
+        // update position
         this.snakeBody[i].pos.x = positionsX[i - 1];
         this.snakeBody[i].pos.y = positionsY[i - 1];
 
-        let pseg = this.snakeBody[i - 1]; // Prev segment
-        let nseg = this.snakeBody[i + 1]; // Next segment
-        let seg = this.snakeBody[i];
+        // set new sprite
+        let seg = this.snakeBody[i]; // segment
+
+        let psegX = this.snakeBody[i - 1].pos.x; // Prev position X
+        let nsegX = positionsX[i]; // Next position X
+        let segX = this.snakeBody[i].pos.x; //current position X
+
+        let psegY = this.snakeBody[i - 1].pos.y; // Prev position Y
+        let nsegY = positionsY[i]; // Next position Y
+        let segY = this.snakeBody[i].pos.y; //current position Y
 
         // tail sprite:
         if (i == this.snakeBody.length - 1) {
-          if (pseg.pos.y > seg.pos.y) {
+          if (psegY > segY) {
             seg.frame = 4; //tailGoDown
-          } else if (pseg.pos.x < seg.pos.x) {
+          } else if (psegX < segX) {
             seg.frame = 5; //tailGoLeft
-          } else if (pseg.pos.y < seg.pos.y) {
+          } else if (psegY < segY) {
             seg.frame = 6; //tailGoTop
-          } else if (pseg.pos.x > seg.pos.x) {
+          } else if (psegX > segX) {
             seg.frame = 7; //tailGoRight
           }
 
           //body sprite
-        } else if (i != this.snakeBody.length - 1 || i != 0) {
-          if (
-            (pseg.pos.x < seg.pos.x && nseg.pos.x > seg.pos.x) ||
-            (nseg.pos.x < seg.pos.x && pseg.pos.x > seg.pos.x)
-          ) {
+        } else {
+          if (psegY == nsegY) {
             seg.frame = 9; //bodyGoHorizontal
-          } else if (
-            (pseg.pos.y < seg.pos.y && nseg.pos.y > seg.pos.y) ||
-            (nseg.pos.y < seg.pos.y && pseg.pos.y > seg.pos.y)
-          ) {
+          } else if (psegX == nsegX) {
             seg.frame = 8; //bodyGoVertical
           } else if (
-            (pseg.pos.x < seg.pos.x && nseg.pos.y > seg.pos.y) ||
-            (nseg.pos.x < seg.pos.x && pseg.pos.y > seg.pos.y)
+            (psegX < segX && nsegY > segY) ||
+            (nsegX < segX && psegY > segY)
           ) {
             seg.frame = 10; //bodyCornerTopRight
           } else if (
-            (pseg.pos.y < seg.pos.y && nseg.pos.x < seg.pos.x) ||
-            (nseg.pos.y < seg.pos.y && pseg.pos.x < seg.pos.x)
+            (psegY < segY && nsegX < segX) ||
+            (nsegY < segY && psegX < segX)
           ) {
             seg.frame = 11; //bodyCornerBottomRight
           } else if (
-            (pseg.pos.x > seg.pos.x && nseg.pos.y < seg.pos.y) ||
-            (nseg.pos.x > seg.pos.x && pseg.pos.y < seg.pos.y)
+            (psegX > segX && nsegY < segY) ||
+            (nsegX > segX && psegY < segY)
           ) {
             seg.frame = 12; //bodyCornerBottomLeft
           } else if (
-            (pseg.pos.y > seg.pos.y && nseg.pos.x > seg.pos.x) ||
-            (nseg.pos.y > seg.pos.y && pseg.pos.x > seg.pos.x)
+            (psegY > segY && nsegX > segX) ||
+            (nsegY > segY && psegX > segX)
           ) {
             seg.frame = 13; //bodyCornerTopLeft
           }
-          //TODO: avoid interruptions when the snake moves in zigzags
         }
       }
     });
