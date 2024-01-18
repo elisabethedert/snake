@@ -5,7 +5,6 @@ import Config from "../config/config.json";
 export default class Sprites {
   constructor() {
     this.fieldsize = Config.fieldsize;
-    this.width = Config.width;
     this.fruitArr = [
       "strawberry",
       "apple",
@@ -19,9 +18,7 @@ export default class Sprites {
     this.obstacle = null;
   }
 
-  //TODO: animation where the snake is shaking because of collision with obstacle
-  //TODO: animation where the snake opens mouth to eat fruit
-
+  // snakes Head on start-scenes
   loadSpriteSnakeHead() {
     k.loadSprite("snakeTung", "sprites/snakeTung.png", {
       sliceX: 14,
@@ -42,6 +39,7 @@ export default class Sprites {
     ]);
   }
 
+  // load fruit and obstacle sprites
   loadSprite(name) {
     if (this.fruitArr.includes(name)) {
       // if the spriteName name is a fruit
@@ -68,11 +66,6 @@ export default class Sprites {
         },
       });
     }
-  }
-
-  // generates a random fruit of the fruitList
-  randomFruit(fruitList) {
-    return fruitList[Math.floor(Math.random() * fruitList.length)];
   }
 
   // add fruits to game
@@ -112,6 +105,11 @@ export default class Sprites {
     // avoid that obstacles and food can have the same positions
     this.fruitPositionAllX = this.fruit.pos.x;
     this.fruitPositionAllY = this.fruit.pos.y;
+  }
+
+  // generates a random fruit of the fruitList
+  randomFruit(fruitList) {
+    return fruitList[Math.floor(Math.random() * fruitList.length)];
   }
 
   // adds obstacles to game

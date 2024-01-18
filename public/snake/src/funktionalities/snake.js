@@ -5,14 +5,12 @@ export default class Snake {
 
   constructor() {
     this.fieldsize = Config.fieldsize;
-    this.current_direction = "right";
-    this.run_action = false;
-    this.snake_length = 2;
+    this.currentDirection = "right";
+    this.runAction = false;
     this.snakeBody = [];
     this.isSupersnake = false;
     this.spriteName = "snake";
     this.speed = Config.speed;
-    this.isCollided = false;
   }
 
   // makes the snake faster
@@ -22,7 +20,6 @@ export default class Snake {
 
   // loads the snake sprite
   // TODO: move to sprite class for consistency
-  // TODO: close gap between snake segments
   snakeSprite() {
     k.loadSprite(this.spriteName, "sprites/snakeSpriteBody.png", {
       sliceX: 14,
@@ -57,7 +54,6 @@ export default class Snake {
       destroy(segment);
     });
     this.snakeBody = [];
-    this.snake_length = 2;
     // add startsnake-head
     let head = k.add([
       k.sprite(this.spriteName, { anim: "headGoDown" }),
@@ -73,15 +69,15 @@ export default class Snake {
       this.spriteName,
     ]);
     this.snakeBody.push(tail);
-    this.current_direction = "down";
+    this.currentDirection = "down";
   }
 
   // respawns the snake
   respawn_all() {
-    this.run_action = false;
+    this.runAction = false;
     // k.wait(0.75, function () {
     this.respawn_snake();
-    this.run_action = true;
+    this.runAction = true;
     // });
   }
 
@@ -117,33 +113,33 @@ export default class Snake {
   movement() {
     // move directions
     k.onKeyPress("up", () => {
-      if (this.current_direction != "down") {
-        this.current_direction = "up";
+      if (this.currentDirection != "down") {
+        this.currentDirection = "up";
       }
     });
 
     k.onKeyPress("down", () => {
-      if (this.current_direction != "up") {
-        this.current_direction = "down";
+      if (this.currentDirection != "up") {
+        this.currentDirection = "down";
       }
     });
 
     k.onKeyPress("left", () => {
-      if (this.current_direction != "right") {
-        this.current_direction = "left";
+      if (this.currentDirection != "right") {
+        this.currentDirection = "left";
       }
     });
 
     k.onKeyPress("right", () => {
-      if (this.current_direction != "left") {
-        this.current_direction = "right";
+      if (this.currentDirection != "left") {
+        this.currentDirection = "right";
       }
     });
 
     // updating the movement every frame
     let timer = 0;
     k.onUpdate(() => {
-      if (!this.run_action) return;
+      if (!this.runAction) return;
       timer += dt();
       if (timer < this.speed) return;
       timer = 0;
@@ -159,7 +155,7 @@ export default class Snake {
       });
 
       // gives the direction of the snake defined by the snakes head
-      switch (this.current_direction) {
+      switch (this.currentDirection) {
         case "down":
           move_x = 0;
           move_y = this.fieldsize;

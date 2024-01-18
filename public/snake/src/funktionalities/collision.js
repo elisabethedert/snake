@@ -33,12 +33,6 @@ export default class Collsion {
       k.play("powerup");
       sprites.showFruit();
       this.showScoreLabel();
-      //TODO: use timeout
-      // setTimeout(function () {
-      //   this.isSupersnake = false;
-      //   console.log(this.isSupersnake);
-      //   console.log("snake ist wieder false");
-      // }, 3000);
     });
 
     k.onCollide(snake.spriteName, "fruit", (s, sf) => {
@@ -55,7 +49,7 @@ export default class Collsion {
       sprites.showDust(
         snake.snakeBody[0].pos.x,
         snake.snakeBody[0].pos.y,
-        snake.current_direction
+        snake.currentDirection
       );
 
       k.play("crash");
@@ -73,7 +67,7 @@ export default class Collsion {
         sprites.showDust(
           snake.snakeBody[0].pos.x,
           snake.snakeBody[0].pos.y,
-          snake.current_direction
+          snake.currentDirection
         );
 
         k.play("crash");
