@@ -20,14 +20,6 @@ export default class Snake {
   }
 
   /**
-   * makes the snake faster
-   * @param {number} faster value by which the snake becomes faster
-   */
-  addSpeed(faster) {
-    this.speed = this.speed - faster;
-  }
-
-  /**
    * loads the snake sprite
    */
   snakeSprite() {
@@ -59,7 +51,7 @@ export default class Snake {
   /**
    * creates a startsnake from 1 head and 1 tail element
    */
-  respawn_snake() {
+  respawnSnake() {
     this.snakeSprite();
 
     this.snakeBody.forEach((segment) => {
@@ -88,9 +80,9 @@ export default class Snake {
   /**
    * respawns the snake
    */
-  respawn_all() {
+  respawnAll() {
     this.runAction = false;
-    this.respawn_snake();
+    this.respawnSnake();
     this.runAction = true;
   }
 
@@ -273,5 +265,13 @@ export default class Snake {
       }
     });
     this.snakeBody.length = collisionIndex;
+  }
+
+  /**
+   * makes the snake faster
+   * @param {number} faster value by which the snake becomes faster
+   */
+  addSpeed(faster) {
+    this.speed = this.speed - faster;
   }
 }

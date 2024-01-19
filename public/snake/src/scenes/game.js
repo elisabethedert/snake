@@ -14,8 +14,8 @@ export default function Game() {
   let collision = new Collision();
 
   layout.buildPlayground();
-  
-  snake.respawn_all();
+
+  snake.respawnAll();
   snake.movement();
   
   interactionObjects.showFruit();

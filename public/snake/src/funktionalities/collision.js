@@ -89,13 +89,13 @@ export default class Collsion {
    * @param {object} interactionObjects the interaction object
    */
   addCollisionObjectandSpeed(snake, interactionObjects) {
-    // if (this.score % 4 === 0 && !(this.score % 36 === 0)) {
-    //   snake.addSpeed(0.05);
+    if (this.score % 4 === 0 && !(this.score % 36 === 0)) {
+      snake.addSpeed(0.05);
     interactionObjects.showObstacles("mole");
-    // } else if (this.score % 9 === 0) {
-    //   snake.addSpeed(0.075);
-    //   interactionObjects.showObstacles("bush");
-    // }
+    } else if (this.score % 9 === 0) {
+      snake.addSpeed(0.075);
+      interactionObjects.showObstacles("bush");
+    }
   }
 
   /**
