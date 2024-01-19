@@ -3,7 +3,9 @@ import Snake from "../funktionalities/snake";
 import InteractionObjects from "../funktionalities/interactionObjects";
 import Collision from "../funktionalities/collision";
 
-// game scene
+/**
+ * game scene
+ */
 export default function Game() {
 
   let layout = new Layout();
@@ -13,11 +15,11 @@ export default function Game() {
 
   layout.buildPlayground();
   
+  snake.respawn_all();
+  snake.movement();
+  
   interactionObjects.showFruit();
 
   collision.showScoreLabel();
   collision.collide(snake, interactionObjects);
-
-  snake.respawn_all();
-  snake.movement();
 }

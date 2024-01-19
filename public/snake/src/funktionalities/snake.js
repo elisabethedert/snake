@@ -1,8 +1,14 @@
 import k from "../kaboom";
 import Config from "../config/config.json";
-export default class Snake {
-  // snake-functions are inspired by "Copyright (c) 2015 Rembound.com" and "Replid Snake Tutorial by Ritza"
 
+/**
+ * snake (playable character)
+ * snake-functions are inspired by "Copyright (c) 2015 Rembound.com" and "Replid Snake Tutorial by Ritza"
+ */
+export default class Snake {
+  /**
+   * constructor of the snake class
+   */
   constructor() {
     this.fieldsize = Config.fieldsize;
     this.currentDirection = "right";
@@ -13,12 +19,17 @@ export default class Snake {
     this.speed = Config.speed;
   }
 
-  // makes the snake faster
+  /**
+   * makes the snake faster
+   * @param {number} faster value by which the snake becomes faster
+   */
   addSpeed(faster) {
     this.speed = this.speed - faster;
   }
 
-  // loads the snake sprite
+  /**
+   * loads the snake sprite
+   */
   snakeSprite() {
     k.loadSprite(this.spriteName, "sprites/snakeSpriteBody.png", {
       sliceX: 14,
@@ -45,7 +56,9 @@ export default class Snake {
     });
   }
 
-  // creates a startsnake from 1 head, 1 body and 1 tail element
+  /**
+   * creates a startsnake from 1 head and 1 tail element
+   */
   respawn_snake() {
     this.snakeSprite();
 
@@ -53,7 +66,7 @@ export default class Snake {
       destroy(segment);
     });
     this.snakeBody = [];
-    // add startsnake-head
+
     let head = k.add([
       k.sprite(this.spriteName, { anim: "headGoDown" }),
       k.pos(2 * this.fieldsize, this.fieldsize * 3),
@@ -61,6 +74,7 @@ export default class Snake {
       this.spriteName,
     ]);
     this.snakeBody.push(head);
+
     let tail = k.add([
       k.sprite(this.spriteName, { anim: "tailGoDown" }),
       k.pos(2 * this.fieldsize, this.fieldsize * 2),
@@ -71,18 +85,21 @@ export default class Snake {
     this.currentDirection = "down";
   }
 
-  // respawns the snake
+  /**
+   * respawns the snake
+   */
   respawn_all() {
     this.runAction = false;
-    // k.wait(0.75, function () {
     this.respawn_snake();
     this.runAction = true;
-    // });
   }
 
-  // adds a segment when fruit was eaten
+  /**
+   * adds a segment when a fruit was eaten
+   * the old tail segment becomes the body segment and a new tail segment is added
+   */
   addSegment() {
-    let currentFrame = this.snakeBody[this.snakeBody.length - 1].frame; // last Element in array
+    let currentFrame = this.snakeBody[this.snakeBody.length - 1].frame; // last element in array
     let tailSprite = "";
     if (currentFrame == 4) {
       currentFrame = 8; // bodyGoVertical
@@ -97,6 +114,7 @@ export default class Snake {
       currentFrame = 9; // bodyGoHorizontal
       tailSprite = "tailGoRight";
     }
+
     let tail = k.add([
       k.sprite(this.spriteName, { anim: tailSprite }),
       k.pos(
@@ -109,6 +127,9 @@ export default class Snake {
     this.snakeBody.push(tail);
   }
 
+  /**
+   * the movement of the snake and the sprite placement
+   */
   movement() {
     // move directions
     k.onKeyPress("up", () => {
@@ -198,7 +219,7 @@ export default class Snake {
         let nsegY = positionsY[i]; // Next position Y
         let segY = this.snakeBody[i].pos.y; //current position Y
 
-        // tail sprite:
+        // tail sprite
         if (i == this.snakeBody.length - 1) {
           if (psegY > segY) {
             seg.frame = 4; //tailGoDown
@@ -241,7 +262,10 @@ export default class Snake {
       }
     });
   }
-
+  /**
+   * reduce the snake length
+   * @param {number} collisionIndex where the snake needs to be shortened
+   */
   reduceSnakeLength(collisionIndex) {
     this.snakeBody.forEach((segment, segIndex) => {
       if (segIndex >= collisionIndex) {

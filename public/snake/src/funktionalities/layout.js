@@ -2,9 +2,14 @@ import k from "../kaboom";
 import Config from "../config/config.json";
 
 export default class Layout {
+  /**
+   * constructor of the layoutF class
+   */
   constructor() {}
 
-  // snakes Head on start-scenes
+  /**
+   * snakes head on start-scenes
+   */
   loadSpriteSnakeHead() {
     k.loadSprite("snakeTung", "sprites/snakeTung.png", {
       sliceX: 14,
@@ -16,20 +21,30 @@ export default class Layout {
         },
       },
     });
-    console.log("schlange züngelt")
+
     let snakeTung = k.add([
       k.sprite("snakeTung"),
-      k.pos(Config.width / 2,70),
+      k.pos(Config.width / 2, 70),
       rotate(90),
       k.anchor("center"),
     ]);
 
-    snakeTung.play("tung")
+    snakeTung.play("tung");
   }
 
+  /**
+   * adds button to scenes
+   * @param {number} rectX button width
+   * @param {number} rectY button height
+   * @param {string} txt button text
+   * @param {number} posX button position x
+   * @param {number} posY button position y
+   * @param {string} scene the scene to be changed
+   */
   addButton(rectX, rectY, txt, posX, posY, scene) {
     k.loadSound("buttonclick", "sound/button.mp3");
     k.loadFont("lilitaone", "font/LilitaOne-Regular.ttf");
+
     let text = add([
       k.rect(rectX, rectY),
       k.pos(posX, posY),
@@ -66,59 +81,67 @@ export default class Layout {
     });
   }
 
-  addText(txt, posX, posY) {
+  /**
+   * adds a headline
+   * @param {string} txt headline text
+   * @param {number} posY text position y
+   */
+  addHeadline(txt, posY) {
     k.loadFont("lilitaone", "font/LilitaOne-Regular.ttf");
     k.add([
       k.text(txt, { font: "lilitaone" }),
-      k.pos(posX / 2, posY / 2),
+      k.pos(Config.width / 2, posY / 2),
       k.color(249, 121, 25),
       k.scale(1.5),
       k.anchor("center"),
     ]);
   }
 
-  addDescription(txt, posX, posY) {
+  /**
+   *
+   * @param {string} txt description text
+   * @param {number} posY text position y
+   */
+  addDescription(txt, posY) {
     k.loadFont("lilitaone", "font/LilitaOne-Regular.ttf");
     k.add([
       k.text(txt, { font: "lilitaone" }),
-      k.pos(posX / 2, posY / 2),
+      k.pos(Config.width / 2, posY / 2),
       k.color(168, 100, 2),
       k.scale(0.6),
       k.anchor("center"),
     ]);
   }
 
-  //adds the game description 
-  addGameDescription() {
-    this.addText("Willkommen zu Snake", Config.width, 380);
+  /**
+   * shows welcome and game description
+   */
+  addStartSceneText() {
+    this.addHeadline("Willkommen zu Snake", 380);
     this.addDescription(
       "Versuche so viele Früchte wie möglich zu fressen",
-      Config.width,
       520
     );
-    this.addDescription(
-      "aber pass vor den Hindernissen auf,",
-      Config.width,
-      580
-    );
+    this.addDescription("aber pass vor den Hindernissen auf,", 580);
     this.addDescription(
       "sobald du mit ihnen kollidierst ist das Spiel vorbei.",
-      Config.width,
       640
     );
     this.addDescription(
       "Du verlierst Punkte, wenn du die Snake über sich selbst leitest.",
-      Config.width,
       700
     );
     this.addDescription(
       "Frisst du mehrere Früchte, bist du vor Hindernissen und Punkverlust geschützt.",
-      Config.width,
       760
     );
   }
 
-  addEndText(score) {
+  /**
+   * shows score and game comment
+   * @param {number} score number of eaten fruits
+   */
+  addEndSceneText(score) {
     let text;
     if (score == 0 || score > 1) {
       if (score == 0) {
@@ -130,28 +153,31 @@ export default class Layout {
       } else if (score >= 11) {
         text = "Wahnsinn, sehr gut gespielt!";
       }
-      this.addText(
-        "Du hast " + score + " Früchte gefressen",
-        Config.width,
-        380
-      );
-      this.addDescription(text, Config.width, 660);
+      this.addHeadline("Du hast " + score + " Früchte gefressen", 380);
+      this.addDescription(text, 660);
     } else if (score == 1) {
       text = "Nächstes mal wird sicher besser!";
-      this.addText("Du hast " + score + " Frucht gefressen", Config.width, 380);
-      this.addDescription(text, Config.width, 660);
+      this.addHeadline("Du hast " + score + " Frucht gefressen", 380);
+      this.addDescription(text, 660);
     }
   }
 
+  /**
+   * loads and adds an image
+   * @param {string} image file name
+   */
   addImage(image) {
     k.loadSprite(image, "sprites/" + image + ".png");
     k.add([sprite(image)]);
   }
 
+  /**
+   * builds the playground of the game
+   */
   buildPlayground() {
     this.addImage("bg");
 
-    // add tilemap 15 x 10 Fields inside of Bricks
+    // add tilemap 15 x 10 fields inside of fricks
     k.addLevel(
       [
         "=================",
@@ -168,10 +194,9 @@ export default class Layout {
         "=================",
       ],
       {
-        // define the size of tile block
+        // define the size of tile block and the meaning of the tiles
         tileWidth: Config.fieldsize,
         tileHeight: Config.fieldsize,
-        // define what each symbol means, by a function returning a component list (what will be passed to add())
         tiles: {
           "=": () => [
             k.rect(Config.fieldsize - 2, Config.fieldsize - 2),

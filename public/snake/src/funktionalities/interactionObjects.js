@@ -1,8 +1,13 @@
 import k from "../kaboom";
 import Config from "../config/config.json";
 
-// contains sprite animations
+/**
+ * contains sprite animations of interaction objects (non playable characters)
+ */
 export default class InteractionObjects {
+  /**
+   * constructor of the interactionObjects class
+   */
   constructor() {
     this.fieldsize = Config.fieldsize;
     this.fruitArr = [
@@ -17,7 +22,10 @@ export default class InteractionObjects {
     this.fruit = null;
   }
 
-  // load fruit and obstacle sprites
+  /**
+   * load fruit and obstacle sprites
+   * @param {string} name name of file
+   */
   loadSprite(name) {
     if (this.fruitArr.includes(name)) {
       // if the spriteName name is a fruit
@@ -46,7 +54,9 @@ export default class InteractionObjects {
     }
   }
 
-  // add fruits to game
+  /**
+   * add fruits to game
+   */
   showFruit() {
     k.loadSound("fruit", "sound/fruit.mp3");
 
@@ -86,12 +96,19 @@ export default class InteractionObjects {
     this.fruitPositionAllY = this.fruit.pos.y;
   }
 
-  // generates a random fruit of the fruitList
+  /**
+   * generates a random fruit of the fruitList
+   * @param {string[]} fruitList array with all kind of fruits
+   * @returns one fruitList element
+   */
   randomFruit(fruitList) {
     return fruitList[Math.floor(Math.random() * fruitList.length)];
   }
 
-  // adds obstacles to game "mole" or "bush"
+  /**
+   * adds obstacles to game "mole" or "bush"
+   * @param {string} obstacleSprite obstacle sprite name
+   */
   showObstacles(obstacleSprite) {
     k.loadSound("bush", "sound/bush.mp3");
     k.loadSound("mole", "sound/mole.mp3");
@@ -136,7 +153,12 @@ export default class InteractionObjects {
     }
   }
 
-  //shows dust sprite when the snake collides
+  /**
+   * shows dust sprite where the snake collides and the game ends
+   * @param {number} snakePosX snakes x-pos
+   * @param {number} snakePosY snakes y-pos
+   * @param {string} direction snakes current direction
+   */
   showDust(snakePosX, snakePosY, direction) {
     k.loadSprite("dust", "sprites/dust.png", {
       sliceX: 6,
@@ -152,7 +174,7 @@ export default class InteractionObjects {
     let dustPosX;
     let dustPosY;
 
-    // get a goodposition for the dust
+    // get a good sposition for the dust
     if (direction == "left") {
       dustPosX = snakePosX + 0.25 * this.fieldsize;
       dustPosY = snakePosY - 0.5 * this.fieldsize;

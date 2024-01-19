@@ -1,6 +1,9 @@
 import kaboom from 'kaboom';
 import Config from "./config/config.json";
 
+/**
+ * initialize kaboom
+ */
 export const k = kaboom( {
     width:Config.width,
     height:Config.height,
