@@ -15,7 +15,6 @@ export default class InteractionObjects {
     this.fruitPositionAllX = null;
     this.fruitPositionAllY = null;
     this.fruit = null;
-    this.obstacle = null;
   }
 
   // load fruit and obstacle sprites
@@ -50,6 +49,7 @@ export default class InteractionObjects {
   // add fruits to game
   showFruit() {
     k.loadSound("fruit", "sound/fruit.mp3");
+
     // if a fruit already exists, it should be destroyed to build a new fruit
     if (this.fruit) {
       destroy(this.fruit);
@@ -70,6 +70,7 @@ export default class InteractionObjects {
       fruitType = "fruit";
     }
 
+    //load random fruit and add to game
     this.loadSprite(randFruit);
     this.fruit = add([
       k.pos(fruitPosition.x, fruitPosition.y),
@@ -77,7 +78,6 @@ export default class InteractionObjects {
       k.area(),
       fruitType,
     ]);
-
     this.fruit.play("anim");
     k.play("fruit");
 
@@ -91,11 +91,17 @@ export default class InteractionObjects {
     return fruitList[Math.floor(Math.random() * fruitList.length)];
   }
 
-  // adds obstacles to game
+  // adds obstacles to game "mole" or "bush"
   showObstacles(obstacleSprite) {
     k.loadSound("bush", "sound/bush.mp3");
     k.loadSound("mole", "sound/mole.mp3");
-    k.destroyAll("obstacle");
+
+    // never show two of the same kind of obstacle at the same time
+    if (obstacleSprite == "bush") {
+      k.destroyAll("bush");
+    } else if (obstacleSprite == "mole") {
+      k.destroyAll("mole");
+    }
 
     // generate a random obstace position
     var obstaclePosition = k.rand(vec2(1, 2), vec2(15, 11));
@@ -110,13 +116,13 @@ export default class InteractionObjects {
       this.fruitPositionAllY != obstaclePosition.y
     ) {
       this.loadSprite(obstacleSprite);
-      // wait 1 second to give the player a chance for orientation
+      // wait 1 second before add to game and play sound to give the player a chance for orientation
       k.wait(1, function () {
         obstacle = add([
           k.pos(obstaclePosition.x, obstaclePosition.y),
           k.sprite("oSprite"),
           k.area(),
-          "obstacle",
+          obstacleSprite,
         ]);
         obstacle.play("anim");
         if (obstacleSprite == "bush") {
