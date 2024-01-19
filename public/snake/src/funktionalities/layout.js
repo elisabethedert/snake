@@ -4,6 +4,29 @@ import Config from "../config/config.json";
 export default class Layout {
   constructor() {}
 
+  // snakes Head on start-scenes
+  loadSpriteSnakeHead() {
+    k.loadSprite("snakeTung", "sprites/snakeTung.png", {
+      sliceX: 14,
+      sliceY: 1,
+      anims: {
+        tung: {
+          from: 0,
+          to: 13,
+        },
+      },
+    });
+    console.log("schlange züngelt")
+    let snakeTung = k.add([
+      k.sprite("snakeTung"),
+      k.pos(Config.width / 2,70),
+      rotate(90),
+      k.anchor("center"),
+    ]);
+
+    snakeTung.play("tung")
+  }
+
   addButton(rectX, rectY, txt, posX, posY, scene) {
     k.loadSound("buttonclick", "sound/button.mp3");
     k.loadFont("lilitaone", "font/LilitaOne-Regular.ttf");
@@ -65,11 +88,41 @@ export default class Layout {
     ]);
   }
 
+  //adds the game description 
+  addGameDescription() {
+    this.addText("Willkommen zu Snake", Config.width, 380);
+    this.addDescription(
+      "Versuche so viele Früchte wie möglich zu fressen",
+      Config.width,
+      520
+    );
+    this.addDescription(
+      "aber pass vor den Hindernissen auf,",
+      Config.width,
+      580
+    );
+    this.addDescription(
+      "sobald du mit ihnen kollidierst ist das Spiel vorbei.",
+      Config.width,
+      640
+    );
+    this.addDescription(
+      "Du verlierst Punkte, wenn du die Snake über sich selbst leitest.",
+      Config.width,
+      700
+    );
+    this.addDescription(
+      "Frisst du mehrere Früchte, bist du vor Hindernissen und Punkverlust geschützt.",
+      Config.width,
+      760
+    );
+  }
+
   addEndText(score) {
     let text;
     if (score == 0 || score > 1) {
       if (score == 0) {
-        text = "Denk dran Früchte zu fressen um Punkte zu erhalten";
+        text = "Denk dran Früchte zu fressen, um Punkte zu erhalten";
       } else if (score != 1 && score <= 5) {
         text = "Schon ganz okay!";
       } else if (score <= 10) {
@@ -85,11 +138,7 @@ export default class Layout {
       this.addDescription(text, Config.width, 660);
     } else if (score == 1) {
       text = "Nächstes mal wird sicher besser!";
-      this.addText(
-        "Du hast " + score + " Frucht gefressen",
-        Config.width, 
-        380
-      );
+      this.addText("Du hast " + score + " Frucht gefressen", Config.width, 380);
       this.addDescription(text, Config.width, 660);
     }
   }
