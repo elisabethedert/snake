@@ -1,7 +1,6 @@
 import k from "../kaboom";
 import Game from "./game";
 import Navigation from "./navigation";
-import Sprites from "../funktionalities/sprites";
 import Layout from "../funktionalities/layout";
 import Config from "../config/config.json";
 

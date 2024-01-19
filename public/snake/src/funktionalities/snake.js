@@ -19,7 +19,6 @@ export default class Snake {
   }
 
   // loads the snake sprite
-  // TODO: move to sprite class for consistency
   snakeSprite() {
     k.loadSprite(this.spriteName, "sprites/snakeSpriteBody.png", {
       sliceX: 14,

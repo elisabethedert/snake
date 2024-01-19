@@ -2,7 +2,7 @@ import k from "../kaboom";
 import Config from "../config/config.json";
 
 // contains sprite animations
-export default class Sprites {
+export default class InteractionObjects {
   constructor() {
     this.fieldsize = Config.fieldsize;
     this.fruitArr = [
@@ -16,27 +16,6 @@ export default class Sprites {
     this.fruitPositionAllY = null;
     this.fruit = null;
     this.obstacle = null;
-  }
-
-  // snakes Head on start-scenes
-  loadSpriteSnakeHead() {
-    k.loadSprite("snakeTung", "sprites/snakeTung.png", {
-      sliceX: 14,
-      sliceY: 1,
-      anims: {
-        tung: {
-          from: 0,
-          to: 13,
-        },
-      },
-    });
-
-    k.add([
-      k.sprite("snakeTung", { anim: "tung" }),
-      k.pos(this.width / 2, 70),
-      rotate(90),
-      k.anchor("center"),
-    ]);
   }
 
   // load fruit and obstacle sprites

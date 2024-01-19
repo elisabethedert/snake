@@ -9,7 +9,6 @@ export default class Collsion {
   }
 
   // shows score
-  // TODO: move to layout class for consistency
   showScoreLabel() {
     k.loadFont("lilitaone", "font/LilitaOne-Regular.ttf")
     if (this.scoreLabel) {
@@ -23,7 +22,7 @@ export default class Collsion {
   }
 
   // handels collisions
-  collide(snake, sprites) {
+  collide(snake, interactionObjects) {
     k.loadSound("eat", "sound/eat.mp3");
     k.loadSound("powerup", "sound/powerup.mp3");
     k.loadSound("crash", "sound/crash.mp3");
@@ -31,7 +30,7 @@ export default class Collsion {
     k.onCollide(snake.spriteName, "superfruit", (s, f) => {
       snake.isSupersnake = true;
       k.play("powerup");
-      sprites.showFruit();
+      interactionObjects.showFruit();
       this.showScoreLabel();
     });
 
@@ -39,14 +38,14 @@ export default class Collsion {
       k.play("eat");
       snake.isSupersnake = false;
       this.score++;
-      this.addCollisionObjectandSpeed(snake, sprites);
+      this.addCollisionObjectandSpeed(snake, interactionObjects);
       snake.addSegment();
-      sprites.showFruit();
+      interactionObjects.showFruit();
       this.showScoreLabel();
     });
 
     k.onCollide(snake.spriteName, "brick", (s, b) => {
-      sprites.showDust(
+      interactionObjects.showDust(
         snake.snakeBody[0].pos.x,
         snake.snakeBody[0].pos.y,
         snake.currentDirection
@@ -64,7 +63,7 @@ export default class Collsion {
 
     k.onCollide(snake.spriteName, "obstacle", (s, m) => {
       if (snake.isSupersnake == false) {
-        sprites.showDust(
+        interactionObjects.showDust(
           snake.snakeBody[0].pos.x,
           snake.snakeBody[0].pos.y,
           snake.currentDirection
@@ -88,13 +87,13 @@ export default class Collsion {
     });
   }
 
-  addCollisionObjectandSpeed(snake, sprites) {
+  addCollisionObjectandSpeed(snake, interactionObjects) {
     if (this.score % 4 === 0 && !(this.score % 36 === 0)) {
       snake.addSpeed(0.05);
-      sprites.showObstacles("mole");
+      interactionObjects.showObstacles("mole");
     } else if (this.score % 9 === 0) {
       snake.addSpeed(0.075);
-      sprites.showObstacles("bush");
+      interactionObjects.showObstacles("bush");
     }
   }
 
