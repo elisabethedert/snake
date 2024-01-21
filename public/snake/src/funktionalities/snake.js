@@ -254,6 +254,7 @@ export default class Snake {
       }
     });
   }
+  
   /**
    * reduce the snake length
    * @param {number} collisionIndex where the snake needs to be shortened

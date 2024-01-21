@@ -132,7 +132,7 @@ export default class Layout {
       700
     );
     this.addDescription(
-      "Frisst du mehrere Früchte, bist du vor Hindernissen und Punkverlust geschützt.",
+      "Frisst du die Superfrucht, bist du vor Hindernissen und Punkverlust geschützt.",
       760
     );
   }
