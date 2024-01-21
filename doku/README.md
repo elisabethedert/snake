@@ -154,3 +154,8 @@ In Zukunft wäre eine frühere Datei-Aufteilung sinnvoller, als ich sie in diese
 Elisabeth Edert,
 Rich-Media-Anwendungen WS 23/24,
 21. Januar 2024
+
+
+Replit @ritza. (2021, 13. Oktober). Snake-Kaboom. https://docs.replit.com/tutorials/Kaboom/build-snake-with-Kaboom, zugegriffen am 16.12.2024
+Rembound. (2020, 17. Februar). Creating a snake game tutorial with HTML5. https://rembound.com/articles/creating-a-snake-game-tutorial-with-html5, zugegriffen am 13.01.2024
+Lilita One - Juan Montoreano - Google Fonts. (o. D.). https://fonts.google.com/specimen/Lilita+One, zugegriffen am 12.01.2024
