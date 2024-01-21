@@ -17,9 +17,9 @@ export default class InteractionObjects {
       "orange",
       "superfruits",
     ];
-    this.fruitPositionAllX = null;
-    this.fruitPositionAllY = null;
+    this.obstacleArr = ["mole", "bush"];
     this.fruit = null;
+    this.obstacle = null;
   }
 
   /**
@@ -27,31 +27,26 @@ export default class InteractionObjects {
    * @param {string} name name of file
    */
   loadSprite(name) {
+    let spriteName;
     if (this.fruitArr.includes(name)) {
-      // if the spriteName name is a fruit
-      k.loadSprite("fruitSprite", "sprites/" + name + ".png", {
-        sliceX: 6,
-        sliceY: 1,
-        anims: {
-          anim: {
-            from: 0,
-            to: 5,
-          },
-        },
-      });
+      // the spriteName name is a fruit
+      spriteName = "fruitSprite";
+    } else if (this.obstacleArr.includes(name)) {
+      // the spriteName name is an obstacle
+      spriteName = "oSprite";
     } else {
-      // if the spriteName is not a fruit
-      k.loadSprite("oSprite", "sprites/" + name + ".png", {
-        sliceX: 6,
-        sliceY: 1,
-        anims: {
-          anim: {
-            from: 0,
-            to: 5,
-          },
-        },
-      });
+      spriteName = "dust";
     }
+    k.loadSprite(spriteName, "sprites/" + name + ".png", {
+      sliceX: 6,
+      sliceY: 1,
+      anims: {
+        anim: {
+          from: 0,
+          to: 5,
+        },
+      },
+    });
   }
 
   /**
@@ -66,10 +61,17 @@ export default class InteractionObjects {
     }
 
     // generate a random fruit position
-    var fruitPosition = k.rand(vec2(2, 2), vec2(15, 11));
-    fruitPosition.x = Math.floor(fruitPosition.x);
-    fruitPosition.y = Math.floor(fruitPosition.y);
-    fruitPosition = fruitPosition.scale(this.fieldsize);
+    var fruitPosition = this.objectPositionGenerator();
+
+    if (this.obstacle != null) {
+      while (
+        // avoid that obstacles and food can have the same positions
+        this.obstacle.pos.x == fruitPosition.x &&
+        this.obstacle.pos.y == fruitPosition.y
+      ) {
+        fruitPosition = this.objectPositionGenerator();
+      }
+    }
 
     // get a random fruit and name the object by its type (superfruit or normal fruit)
     let randFruit = this.randomFruit(this.fruitArr);
@@ -90,19 +92,6 @@ export default class InteractionObjects {
     ]);
     this.fruit.play("anim");
     k.play("fruit");
-
-    // avoid that obstacles and food can have the same positions
-    this.fruitPositionAllX = this.fruit.pos.x;
-    this.fruitPositionAllY = this.fruit.pos.y;
-  }
-
-  /**
-   * generates a random fruit of the fruitList
-   * @param {string[]} fruitList array with all kind of fruits
-   * @returns one fruitList element
-   */
-  randomFruit(fruitList) {
-    return fruitList[Math.floor(Math.random() * fruitList.length)];
   }
 
   /**
@@ -120,37 +109,34 @@ export default class InteractionObjects {
       k.destroyAll("mole");
     }
 
-    // generate a random obstace position
-    var obstaclePosition = k.rand(vec2(1, 2), vec2(15, 11));
-    obstaclePosition.x = Math.floor(obstaclePosition.x);
-    obstaclePosition.y = Math.floor(obstaclePosition.y);
-    obstaclePosition = obstaclePosition.scale(this.fieldsize);
+    // generate a random obstacle position
+    var obstaclePosition = this.objectPositionGenerator();
 
-    // avoid that obstacles and food can have the same positions
-    let obstacle;
-    if (
-      this.fruitPositionAllX != obstaclePosition.x &&
-      this.fruitPositionAllY != obstaclePosition.y
+    while (
+      // avoid that obstacles and food can have the same positions
+      this.fruit.pos.x == obstaclePosition.x &&
+      this.fruit.pos.y == obstaclePosition.y
     ) {
-      this.loadSprite(obstacleSprite);
-      // wait 1 second before add to game and play sound to give the player a chance for orientation
-      k.wait(1, function () {
-        obstacle = add([
-          k.pos(obstaclePosition.x, obstaclePosition.y),
-          k.sprite("oSprite"),
-          k.area(),
-          obstacleSprite,
-        ]);
-        obstacle.play("anim");
-        if (obstacleSprite == "bush") {
-          k.play("bush");
-        } else if (obstacleSprite == "mole") {
-          k.play("mole");
-        }
-      });
-    } else {
-      this.showObstacles(obstacleSprite);
+      obstaclePosition = this.objectPositionGenerator();
     }
+
+    // wait 1 second before playing to give the player a chance for orientation
+    setTimeout(() => {
+      this.loadSprite(obstacleSprite);
+      this.obstacle = add([
+        k.pos(obstaclePosition.x, obstaclePosition.y),
+        k.sprite("oSprite"),
+        k.area(),
+        obstacleSprite,
+      ]);
+
+      this.obstacle.play("anim");
+      if (obstacleSprite == "bush") {
+        k.play("bush");
+      } else if (obstacleSprite == "mole") {
+        k.play("mole");
+      }
+    }, "1000");
   }
 
   /**
@@ -160,16 +146,7 @@ export default class InteractionObjects {
    * @param {string} direction snakes current direction
    */
   showDust(snakePosX, snakePosY, direction) {
-    k.loadSprite("dust", "sprites/dust.png", {
-      sliceX: 6,
-      sliceY: 1,
-      anims: {
-        anim: {
-          from: 0,
-          to: 5,
-        },
-      },
-    });
+    this.loadSprite("dust");
 
     let dustPosX;
     let dustPosY;
@@ -196,5 +173,26 @@ export default class InteractionObjects {
       "dust",
     ]);
     dust.play("anim");
+  }
+
+  /**
+   * generates a random fruit of the fruitList
+   * @param {string[]} fruitList array with all kind of fruits
+   * @returns one fruitList element
+   */
+  randomFruit(fruitList) {
+    return fruitList[Math.floor(Math.random() * fruitList.length)];
+  }
+
+  /**
+   * generate a random interaction object position
+   * @returns object position
+   */
+  objectPositionGenerator() {
+    var objectPosition = k.rand(vec2(2, 2), vec2(15, 11));
+    objectPosition.x = Math.floor(objectPosition.x);
+    objectPosition.y = Math.floor(objectPosition.y);
+    objectPosition = objectPosition.scale(this.fieldsize);
+    return objectPosition;
   }
 }

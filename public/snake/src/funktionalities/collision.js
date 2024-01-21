@@ -37,9 +37,9 @@ export default class Collsion {
       k.play("eat");
       snake.isSupersnake = false;
       this.score++;
+      interactionObjects.showFruit();
       this.addCollisionObjectandSpeed(snake, interactionObjects);
       snake.addSegment();
-      interactionObjects.showFruit();
       this.showScoreLabel();
     });
 
